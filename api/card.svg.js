@@ -1,0 +1,80 @@
+// api/card.svg.js
+import { scrapeLHFA } from "./_scrape.js";
+
+const isNess = (s) => /^(?:ness)$/i.test((s || "").trim());
+const esc = (s) =>
+  String(s ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+
+function buildSVG({ standings, fixtures, updatedAt }) {
+  const up = fixtures.filter((f) => !f.result).slice(0, 8);
+
+  const W = 900, H = 1200, M = 40;
+  const headerH = 110;
+  const colGap = 30;
+  const colW = (W - 2 * M - colGap) / 2;
+
+  const sRows = standings.map((r, i) => {
+    const y = headerH + M + 30 + i * 28;
+    const nes = /ness/i.test(r.team);
+    return `<text x="${M + 12}" y="${y}" font-size="20" font-weight="${nes ? "700" : "400"}" fill="${nes ? "#008000" : "#111"}">${esc(`${i + 1}. ${r.team}`)}</text>
+            <text x="${M + colW - 12}" y="${y}" font-size="20" text-anchor="end" fill="${nes ? "#008000" : "#111"}">${esc(`${r.points} pts`)}</text>`;
+  }).join("\n");
+
+  const fRows = (up.length ? up : fixtures.slice(0, 8)).map((f, i) => {
+    const y = headerH + M + 30 + i * 32;
+    const homeIsNess = isNess(f.home);
+    const matchup = `${f.home} vs ${f.away}`;
+    const when = [f.date, f.time].filter(Boolean).join(" ");
+    return `<text x="${M + colW + colGap + 12}" y="${y}" font-size="18" font-weight="${homeIsNess ? "700" : "400"}" fill="${homeIsNess ? "#008000" : "#111"}">${esc(matchup)}</text>
+            <text x="${W - M - 12}" y="${y}" font-size="18" text-anchor="end" fill="#444">${esc(when || "-")}</text>`;
+  }).join("\n");
+
+  const ts = new Date(updatedAt).toLocaleString("en-GB");
+  const subtitle = `NESSFIX — Fixtures & League Table`;
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#008000"/>
+      <stop offset="1" stop-color="#1a8f1a"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="${W}" height="${H}" fill="#ffffff"/>
+  <rect x="0" y="0" width="${W}" height="${headerH}" fill="url(#g)"/>
+  <text x="${W / 2}" y="${headerH / 2 + 10}" font-size="36" font-weight="700" fill="#fff" text-anchor="middle">${esc(subtitle)}</text>
+
+  <text x="${M + 12}" y="${headerH + 24}" font-size="22" font-weight="700" fill="#111">League Standings</text>
+  <text x="${M + colW + colGap + 12}" y="${headerH + 24}" font-size="22" font-weight="700" fill="#111">Upcoming Fixtures</text>
+
+  ${sRows}
+  ${fRows}
+
+  <text x="${W / 2}" y="${H - 20}" font-size="14" fill="#333" text-anchor="middle">
+    ${esc(`Last updated: ${ts} (UK time)`)}
+  </text>
+
+  <rect x="${M}" y="${headerH + 10}" width="${colW}" height="${H - headerH - 60}" fill="none" stroke="#ddd"/>
+  <rect x="${M + colW + colGap}" y="${headerH + 10}" width="${colW}" height="${H - headerH - 60}" fill="none" stroke="#ddd"/>
+</svg>`;
+}
+
+export default async function handler(req, res) {
+  try {
+    const data = await scrapeLHFA();
+    const svg = buildSVG(data);
+    res.setHeader("Content-Type", "image/svg+xml; charset=utf-8");
+    res.setHeader("Cache-Control", "s-maxage=300, stale-while-revalidate=86400");
+    res.status(200).send(svg);
+  } catch (e) {
+    const msg = String(e).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+    res.status(500).send(`<svg xmlns="http://www.w3.org/2000/svg" width="800" height="200">
+      <text x="20" y="100" font-size="20">Card error: ${msg}</text>
+    </svg>`);
+  }
+}
