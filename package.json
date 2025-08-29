@@ -1,20 +1,11 @@
 {
-  "name": "nessfix",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "scrape": "node scripts/scrape.js",
-    "build": "node scripts/build.js",
-    "all": "npm run scrape && npm run build",
-    "dev": "npx serve public -l 3000"
-  },
   "dependencies": {
     "@resvg/resvg-js": "^2.6.1",
-    "@sparticuz/chromium": "126.0.0",
-    "puppeteer-core": "22.12.1"
+    "@sparticuz/chromium": "138.0.2",
+    "puppeteer-core": "^24.16.2"
   },
   "devDependencies": {
-    "puppeteer": "22.12.1",
+    "puppeteer": "^24.16.2",
     "serve": "^14.2.3"
   },
   "engines": {
