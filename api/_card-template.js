@@ -65,7 +65,7 @@ export function buildSVG({ standings, fixtures, updatedAt }) {
   <!-- Header -->
   <rect x="0" y="0" width="${W}" height="${headerH}" fill="${COLORS.header}"/>
   <text x="${W/2}" y="${headerH/2 + 10}" font-size="28" font-weight="800" fill="#fff" text-anchor="middle">
-    NESS FC FIXTURES & LEAGUE TABLE
+    ${esc("NESS FC FIXTURES & LEAGUE TABLE")}
   </text>
 
   <!-- League Standings -->
