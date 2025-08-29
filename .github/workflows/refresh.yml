@@ -1,11 +1,11 @@
 name: Refresh NessFix
 on:
-  workflow_dispatch: {}         # allows you to run it by hand now
+  workflow_dispatch: {}
   schedule:
-    - cron: "0 7 * * *"         # optional: 07:00 UTC daily refresh
+    - cron: "0 7 * * *"   # optional daily run
 
 permissions:
-  contents: write               # allow the workflow to commit back to the repo
+  contents: write
 
 concurrency:
   group: nessfix-refresh
@@ -18,6 +18,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           persist-credentials: true
 
       - name: Setup Node
@@ -25,22 +26,33 @@ jobs:
         with:
           node-version: "18"
 
-      - name: Cache Puppeteer browser download (optional, speeds up runs)
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/puppeteer
-          key: ${{ runner.os }}-puppeteer-${{ hashFiles('package.json') }}
-
       - name: Install deps
-        run: npm install --no-fund --no-audit
+        run: npm ci || npm install
 
       - name: Scrape + Build
-        run: npm run all            # runs scripts/scrape.js then scripts/build.js
+        run: npm run all
+
+      - name: Show changes
+        run: |
+          echo "== git status =="
+          git status -s || true
+          echo "== tree =="
+          ls -la
+          echo "== public =="
+          ls -la public || true
+          echo "== data =="
+          ls -la data || true
 
       - name: Commit & push if changed
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git diff --quiet && echo "No changes" || git commit -m "auto: refresh data & build"
-          git push
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "auto: refresh data & build"
+            # ensure up to date, then push to same branch
+            git pull --rebase origin ${{ github.ref_name }}
+            git push origin HEAD:${{ github.ref_name }}
+          fi
