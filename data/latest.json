@@ -3,17 +3,17 @@
     {
       "pos": "1",
       "team": "Westside",
-      "points": "29"
+      "points": "32"
     },
     {
       "pos": "2",
       "team": "Back",
-      "points": "27"
+      "points": "30"
     },
     {
       "pos": "3",
       "team": "Point",
-      "points": "23"
+      "points": "26"
     },
     {
       "pos": "4",
@@ -32,12 +32,12 @@
     },
     {
       "pos": "7",
-      "team": "Lochs",
-      "points": "12"
+      "team": "Harris",
+      "points": "15"
     },
     {
       "pos": "8",
-      "team": "Harris",
+      "team": "Lochs",
       "points": "12"
     },
     {
@@ -145,10 +145,10 @@
     },
     {
       "date": "2025-08-29",
-      "time": "18:30",
+      "time": "",
       "home": "Point",
       "away": "Ness",
-      "result": "",
+      "result": "3 - 0",
       "ground": "Garrabost, Point"
     },
     {
