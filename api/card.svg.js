@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     const data = await scrapeLHFA();
     const svg = buildSVG(data);
     res.setHeader("Content-Type", "image/svg+xml; charset=utf-8");
-    res.setHeader("Cache-Control", "s-maxage=300, stale-while-revalidate=86400");
+    res.setHeader("Cache-Control", "no-store, must-revalidate");
     res.status(200).send(svg);
   } catch (e) {
     const msg = String(e).replace(/&/g, "&amp;").replace(/</g, "&lt;");
