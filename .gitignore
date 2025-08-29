@@ -1,0 +1,3 @@
+node_modules
+# keep the generated outputs under version control
+# (do NOT ignore public/index.html, public/nessfix.svg, data/latest.json)
