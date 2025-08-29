@@ -5,17 +5,13 @@ import puppeteer from "puppeteer-core";
 const URL = "https://www.lhfa.org.uk/league/";
 const NORM = (s) => (s || "").replace(/\s+/g, " ").trim();
 
-// ---- helpers ---------------------------------------------------------------
-
-/** Clean odd mid-cell values like "18:30:0018:30" or "18:30:00" */
+// --- helpers (unchanged) ---
 function cleanMid(midRaw) {
   let s = NORM(midRaw);
-  s = s.replace(/\b(\d{1,2}):(\d{2}):00\b/g, "$1:$2");   // 18:30:00 -> 18:30
-  s = s.replace(/(\b\d{1,2}:\d{2})(?::00)?\1\b/g, "$1"); // 18:30:0018:30 -> 18:30
+  s = s.replace(/\b(\d{1,2}):(\d{2}):00\b/g, "$1:$2");
+  s = s.replace(/(\b\d{1,2}:\d{2})(?::00)?\1\b/g, "$1");
   return s;
 }
-
-/** Extract a clean YYYY-MM-DD from strings that may include ISO + dd/mm/yyyy */
 function parseDateCell(s) {
   const t = s || "";
   const iso = t.match(/(\d{4}-\d{2}-\d{2})/);
@@ -24,22 +20,17 @@ function parseDateCell(s) {
   if (dm) return `${dm[3]}-${String(dm[2]).padStart(2, "0")}-${String(dm[1]).padStart(2, "0")}`;
   return NORM(t);
 }
-
 const TIME_RE = /^\d{1,2}:\d{2}$/;
 
-// ---- scraper ---------------------------------------------------------------
-
 export async function scrapeLHFA() {
-  // Configure chromium for serverless
-  chromium.setHeadlessMode = true;
-  chromium.setGraphicsMode = false;
+  // Launch the serverless Chromium that ships with @sparticuz/chromium
+  const executablePath = await chromium.executablePath();
 
   const browser = await puppeteer.launch({
-    args: chromium.args,
-    defaultViewport: { width: 1200, height: 800 },
-    executablePath: await chromium.executablePath(),
-    headless: chromium.headless,
-    ignoreHTTPSErrors: true
+    executablePath,
+    args: chromium.args,             // serverless-friendly flags
+    headless: "shell",               // recommended headless mode for CfT/headless_shell
+    defaultViewport: { width: 1200, height: 800 }
   });
 
   try {
@@ -52,7 +43,7 @@ export async function scrapeLHFA() {
       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36"
     );
 
-    // Optional perf: block images/media to speed up render (keep CSS/JS)
+    // Speed up: block images/media/fonts (leave CSS/JS)
     await page.setRequestInterception(true);
     page.on("request", (req) => {
       const rt = req.resourceType();
@@ -62,7 +53,7 @@ export async function scrapeLHFA() {
 
     await page.goto(URL, { waitUntil: "networkidle2", timeout: 60000 });
 
-    // Wait for a fixtures-like table (date/home/away + time or score) with rows
+    // Wait for a fixtures-like table (date+home+away + time/score)
     await page.waitForFunction(() => {
       const N = (s) => (s || "").replace(/\s+/g, " ").trim().toLowerCase();
       const tables = Array.from(document.querySelectorAll("table"));
@@ -86,7 +77,6 @@ export async function scrapeLHFA() {
       const out = { standings: [], fixturesRaw: [] };
       const tables = Array.from(document.querySelectorAll("table"));
 
-      // Standings: usually first table
       if (tables[0]) {
         const rows = Array.from(tables[0].querySelectorAll("tbody tr, tr"));
         for (const tr of rows) {
@@ -100,7 +90,6 @@ export async function scrapeLHFA() {
         }
       }
 
-      // Fixtures: find a table with date/home/(time|score)/away
       const fixturesTable = tables.find((t) => {
         const heads = Array.from(t.querySelectorAll("thead th, tr:first-child th, tr:first-child td"))
           .map((el) => norm(el.textContent).toLowerCase());
@@ -117,9 +106,9 @@ export async function scrapeLHFA() {
           const tds = tr.querySelectorAll("td");
           if (tds.length >= 4) {
             out.fixturesRaw.push({
-              date: norm(tds[0]?.textContent),  // dd/mm/yyyy mixed with hidden sort keys
+              date: norm(tds[0]?.textContent),
               home: norm(tds[1]?.textContent),
-              mid:  norm(tds[2]?.textContent),  // time or score
+              mid:  norm(tds[2]?.textContent),
               away: norm(tds[3]?.textContent),
               ground: tds[4] ? norm(tds[4].textContent) : ""
             });
@@ -130,7 +119,6 @@ export async function scrapeLHFA() {
       return out;
     });
 
-    // Normalise + Ness-only + sorted
     const fixtures = fixturesRaw
       .map((r) => {
         const date = parseDateCell(r.date);
