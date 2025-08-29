@@ -1,0 +1,20 @@
+{
+  "name": "nessfix",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "scrape": "node scripts/scrape.js",
+    "build": "node scripts/build.js",
+    "all": "npm run scrape && npm run build",
+    "dev": "npx serve public -l 3000"
+  },
+  "dependencies": {
+    "puppeteer": "^22.12.1"
+  },
+  "devDependencies": {
+    "serve": "^14.2.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
