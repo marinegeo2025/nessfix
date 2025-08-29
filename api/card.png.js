@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     const png = r.render().asPng();
 
     res.setHeader("Content-Type", "image/png");
-    res.setHeader("Cache-Control", "s-maxage=300, stale-while-revalidate=86400");
+    res.setHeader("Cache-Control", "no-store, must-revalidate");
     res.setHeader("Content-Disposition", 'inline; filename="nessfix-card.png"');
     res.status(200).send(Buffer.from(png));
   } catch (e) {
