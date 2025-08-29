@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>NessFix – Ness FC Fixtures</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { --green:#008000; }
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f9f9f9; color: #111; }
+    h1 { background: var(--green); color: white; padding: 10px; text-align: center; }
+    h2 { margin-top: 40px; border-bottom: 2px solid var(--green); padding-bottom: 5px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; background:white; }
+    th, td { padding: 8px; border: 1px solid #ccc; text-align: center; }
+    tr:nth-child(even) { background: #f2f2f2; }
+    .ness { background: #c6f6c6; font-weight: bold; }
+    .home { color: var(--green); font-weight: bold; }
+    .card { text-align:center; margin-top:30px; }
+    .card img, .card object { max-width: 90%; border: 2px solid var(--green); }
+    .grid { display:grid; gap:20px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+    .standings { overflow:auto; }
+  </style>
+</head>
+<body>
+  <h1>NessFix – League Table & Fixtures</h1>
+
+  <div class="card">
+    <h2>Fixture Card (SVG)</h2>
+    <p><a href="/nessfix.svg" download>📥 Download Fixture Card (SVG)</a></p>
+    <object data="/nessfix.svg" type="image/svg+xml" aria-label="NessFix Card"></object>
+  </div>
+
+  <div class="grid">
+    <section class="standings">
+      <h2>League Standings</h2>
+      <table>
+        <tr><th>Pos</th><th>Team</th><th>Points</th></tr>
+        
+        <tr class="">
+          <td>1</td><td>Westside</td><td>29</td>
+        </tr>
+        <tr class="">
+          <td>2</td><td>Back</td><td>27</td>
+        </tr>
+        <tr class="">
+          <td>3</td><td>Point</td><td>23</td>
+        </tr>
+        <tr class="">
+          <td>4</td><td>Carloway</td><td>23</td>
+        </tr>
+        <tr class="">
+          <td>5</td><td>Athletic</td><td>21</td>
+        </tr>
+        <tr class="ness">
+          <td>6</td><td>Ness</td><td>15</td>
+        </tr>
+        <tr class="">
+          <td>7</td><td>Lochs</td><td>12</td>
+        </tr>
+        <tr class="">
+          <td>8</td><td>Harris</td><td>12</td>
+        </tr>
+        <tr class="">
+          <td>9</td><td>United</td><td>4</td>
+        </tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>Upcoming Ness Fixtures (4)</h2>
+      <table>
+        <tr><th>Date</th><th>Weekday</th><th>Time</th><th>Opponent</th><th>Location</th><th>Result</th></tr>
+        
+      <tr>
+        <td>2025-08-29 18:30:0029/08/2025</td>
+        <td>-</td>
+        <td>18:30</td>
+        <td>Point</td>
+        <td class="">AWAY at Point</td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>2025-09-01 18:30:0001/09/2025</td>
+        <td>-</td>
+        <td>18:30</td>
+        <td>Lochs</td>
+        <td class="">AWAY at Lochs</td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>2025-09-05 18:30:0005/09/2025</td>
+        <td>-</td>
+        <td>18:30</td>
+        <td>Harris</td>
+        <td class="home">HOME (Fivepenny)</td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>2025-09-13 18:30:0013/09/2025</td>
+        <td>-</td>
+        <td>18:30</td>
+        <td>Westside</td>
+        <td class="">AWAY at Westside</td>
+        <td>-</td>
+      </tr>
+      </table>
+
+      <h2>Past Ness Results (12)</h2>
+      <table>
+        <tr><th>Date</th><th>Weekday</th><th>Time</th><th>Opponent</th><th>Location</th><th>Result</th></tr>
+        
+      <tr>
+        <td>2025-04-11 18:30:0011/04/2025</td>
+        <td>-</td>
+        <td>-</td>
+        <td>Athletic</td>
+        <td class="">AWAY at Athletic</td>
+        <td>0 - 1</td>
+      </tr>
+      <tr>
+        <td>2025-04-14 18:30:0014/04/2025</td>
+        <td>-</td>
+        <td>-</td>
+        <td>Carloway</td>
+        <td class="home">HOME (Fivepenny)</td>
+        <td>1 - 2</td>
+      </tr>
+      <tr>
+        <td>2025-05-07 19:00:0007/05/2025</td>
+        <td>-</td>
+        <td>-</td>
+        <td>Back</td>
+        <td class="">AWAY at Back</td>
+        <td>4 - 1</td>
+      </tr>
+      <tr>
+        <td>2025-05-14 19:00:0014/05/2025</td>
+        <td>-</td>
+        <td>-</td>
+        <td>Lochs</td>
+        <td class="home">HOME (Fivepenny)</td>
+        <td>4 - 2</td>
+      </tr>
+      <tr>
+        <td>2025-05-19 19:00:0019/05/2025</td>
+        <td>-</td>
+        <td>-</td>
+        <td>United</td>
+        <td class="">AWAY at United</td>
+        <td>2 - 4</td>
+      </tr>
+      <tr>
+        <td>2025-05-23 19:00:0023/05/2025</td>
+        <td>-</td>
+        <td>-</td>
+        <td>Point</td>
+        <td class="home">HOME (Fivepenny)</td>
+        <td>1 - 3</td>
+      </tr>
+      <tr>
+        <td>2025-06-13 19:00:0013/06/2025</td>
+        <td>-</td>
+        <td>-</td>
+        <td>Westside</td>
+        <td class="home">HOME (Fivepenny)</td>
+        <td>2 - 3</td>
+      </tr>
+      <tr>
+        <td>2025-06-16 19:00:0016/06/2025</td>
+        <td>-</td>
+        <td>-</td>
+        <td>Athletic</td>
+        <td class="home">HOME (Fivepenny)</td>
+        <td>1 - 2</td>
+      </tr>
+      <tr>
+        <td>2025-06-23 19:00:0023/06/2025</td>
+        <td>-</td>
+        <td>-</td>
+        <td>Carloway</td>
+        <td class="">AWAY at Carloway</td>
+        <td>2 - 0</td>
+      </tr>
+      <tr>
+        <td>2025-07-04 19:00:0004/07/2025</td>
+        <td>-</td>
+        <td>-</td>
+        <td>Harris</td>
+        <td class="">AWAY at Harris</td>
+        <td>3 - 1</td>
+      </tr>
+      <tr>
+        <td>2025-07-25 19:00:0025/07/2025</td>
+        <td>-</td>
+        <td>-</td>
+        <td>Back</td>
+        <td class="home">HOME (Fivepenny)</td>
+        <td>4 - 3</td>
+      </tr>
+      <tr>
+        <td>2025-08-22 18:30:0022/08/2025</td>
+        <td>-</td>
+        <td>-</td>
+        <td>United</td>
+        <td class="home">HOME (Fivepenny)</td>
+        <td>5 - 0</td>
+      </tr>
+      </table>
+    </section>
+  </div>
+
+  <p style="margin-top:40px; font-size:12px; text-align:center;">
+    Data source: LHFA • Last built: 29/08/2025, 11:47:03
+  </p>
+</body>
+</html>
