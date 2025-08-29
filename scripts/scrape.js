@@ -19,10 +19,24 @@ function parseDdMmYyyy(s) {
 }
 
 function cleanMid(midRaw) {
-  // Fix odd "18:30:0018:30" patterns and similar
   let s = norm(midRaw);
-  s = s.replace(/(\b\d{1,2}:\d{2})(?::00)?\1\b/, "$1"); // 18:30:0018:30 -> 18:30
+  s = s.replace(/\b(\d{1,2}):(\d{2}):00\b/g, "$1:$2");     // 18:30:00 -> 18:30
+  s = s.replace(/(\b\d{1,2}:\d{2})(?::00)?\1\b/g, "$1");   // 18:30:0018:30 -> 18:30
   return s;
+}
+
+// new: robust date parser that accepts ISO or dd/mm/yyyy anywhere in the string
+function parseDateCell(s) {
+  const t = s || "";
+  const iso = t.match(/(\d{4}-\d{2}-\d{2})/);              // e.g. 2025-04-11
+  if (iso) return iso[1];
+  const dm = t.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);     // e.g. 11/04/2025
+  if (dm) {
+    const dd = String(dm[1]).padStart(2, "0");
+    const mm = String(dm[2]).padStart(2, "0");
+    return `${dm[3]}-${mm}-${dd}`;
+  }
+  return norm(t);
 }
 
 const TIME_RE = /^\d{1,2}:\d{2}$/;
@@ -118,7 +132,7 @@ await page.waitForFunction(() => {
     // Normalise + filter to Ness-only
     const fixtures = fixturesRaw
       .map((r) => {
-        const date = parseDdMmYyyy(r.date) || r.date;
+        const date = parseDateCell(r.date);
         const mid = cleanMid(r.mid);
         const isTime = TIME_RE.test(mid);
         return {
