@@ -5,12 +5,17 @@ import puppeteer from "puppeteer-core";
 const URL = "https://www.lhfa.org.uk/league/";
 const NORM = (s) => (s || "").replace(/\s+/g, " ").trim();
 
+// ---- helpers ---------------------------------------------------------------
+
+/** Clean odd mid-cell values like "18:30:0018:30" or "18:30:00" */
 function cleanMid(midRaw) {
   let s = NORM(midRaw);
-  s = s.replace(/\b(\d{1,2}):(\d{2}):00\b/g, "$1:$2");      // 18:30:00 -> 18:30
-  s = s.replace(/(\b\d{1,2}:\d{2})(?::00)?\1\b/g, "$1");    // 18:30:0018:30 -> 18:30
+  s = s.replace(/\b(\d{1,2}):(\d{2}):00\b/g, "$1:$2");   // 18:30:00 -> 18:30
+  s = s.replace(/(\b\d{1,2}:\d{2})(?::00)?\1\b/g, "$1"); // 18:30:0018:30 -> 18:30
   return s;
 }
+
+/** Extract a clean YYYY-MM-DD from strings that may include ISO + dd/mm/yyyy */
 function parseDateCell(s) {
   const t = s || "";
   const iso = t.match(/(\d{4}-\d{2}-\d{2})/);
@@ -19,10 +24,13 @@ function parseDateCell(s) {
   if (dm) return `${dm[3]}-${String(dm[2]).padStart(2, "0")}-${String(dm[1]).padStart(2, "0")}`;
   return NORM(t);
 }
+
 const TIME_RE = /^\d{1,2}:\d{2}$/;
 
+// ---- scraper ---------------------------------------------------------------
+
 export async function scrapeLHFA() {
-  // Vercel serverless: use chromium binary from @sparticuz/chromium
+  // Configure chromium for serverless
   chromium.setHeadlessMode = true;
   chromium.setGraphicsMode = false;
 
@@ -30,14 +38,28 @@ export async function scrapeLHFA() {
     args: chromium.args,
     defaultViewport: { width: 1200, height: 800 },
     executablePath: await chromium.executablePath(),
-    headless: chromium.headless
+    headless: chromium.headless,
+    ignoreHTTPSErrors: true
   });
 
   try {
     const page = await browser.newPage();
+    page.setDefaultNavigationTimeout(60000);
+    page.setDefaultTimeout(60000);
+
+    await page.setExtraHTTPHeaders({ "Accept-Language": "en-GB,en;q=0.9" });
     await page.setUserAgent(
       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36"
     );
+
+    // Optional perf: block images/media to speed up render (keep CSS/JS)
+    await page.setRequestInterception(true);
+    page.on("request", (req) => {
+      const rt = req.resourceType();
+      if (rt === "image" || rt === "media" || rt === "font") return req.abort();
+      return req.continue();
+    });
+
     await page.goto(URL, { waitUntil: "networkidle2", timeout: 60000 });
 
     // Wait for a fixtures-like table (date/home/away + time or score) with rows
@@ -95,7 +117,7 @@ export async function scrapeLHFA() {
           const tds = tr.querySelectorAll("td");
           if (tds.length >= 4) {
             out.fixturesRaw.push({
-              date: norm(tds[0]?.textContent),  // dd/mm/yyyy mixed with sort keys
+              date: norm(tds[0]?.textContent),  // dd/mm/yyyy mixed with hidden sort keys
               home: norm(tds[1]?.textContent),
               mid:  norm(tds[2]?.textContent),  // time or score
               away: norm(tds[3]?.textContent),
@@ -108,6 +130,7 @@ export async function scrapeLHFA() {
       return out;
     });
 
+    // Normalise + Ness-only + sorted
     const fixtures = fixturesRaw
       .map((r) => {
         const date = parseDateCell(r.date);
