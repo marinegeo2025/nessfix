@@ -40,8 +40,24 @@ const TIME_RE = /^\d{1,2}:\d{2}$/;
     );
     await page.goto(URL, { waitUntil: "networkidle2", timeout: 60000 });
 
-    // Wait until at least one table with headers shows up
-    await page.waitForSelector("table", { timeout: 60000 });
+await page.waitForFunction(() => {
+  const N = (s) => (s || "").replace(/\s+/g, " ").trim().toLowerCase();
+  const tables = Array.from(document.querySelectorAll("table"));
+  for (const t of tables) {
+    const heads = Array.from(t.querySelectorAll("thead th, tr:first-child th, tr:first-child td"))
+      .map((el) => N(el.textContent));
+    const hasDate = heads.some((h) => h.includes("date"));
+    const hasHome = heads.some((h) => h.includes("home"));
+    const hasAway = heads.some((h) => h.includes("away"));
+    const midOk = heads.some((h) => h.includes("score")) || heads.some((h) => h.includes("time"));
+    if (hasDate && hasHome && hasAway && midOk) {
+      const rowCount =
+        t.querySelectorAll("tbody tr").length || t.querySelectorAll("tr").length;
+      if (rowCount >= 5) return true;
+    }
+  }
+  return false;
+}, { timeout: 60000 });
 
     const { standings, fixturesRaw } = await page.evaluate(() => {
       const norm = (s) => (s || "").replace(/\s+/g, " ").trim();
