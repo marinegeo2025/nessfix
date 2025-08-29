@@ -4,21 +4,39 @@ import fs from "fs";
 const NESS = /^(?:ness)$/i;
 const isNess = (s) => NESS.test((s || "").trim());
 
-// Keep any time token out of result, handle placeholders
+/** Extract a clean YYYY-MM-DD from mixed cells (e.g. "2025-08-29 18:30:0029/08/2025") */
+function cleanDate(s) {
+  if (!s) return s;
+  const str = String(s);
+  const iso = str.match(/(\d{4}-\d{2}-\d{2})/);                // 2025-08-29
+  if (iso) return iso[1];
+  const dm = str.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);       // 29/08/2025
+  if (dm) return `${dm[3]}-${String(dm[2]).padStart(2, "0")}-${String(dm[1]).padStart(2, "0")}`;
+  return str.trim();
+}
+
+/** Normalise time tokens like 18:30:00 → 18:30 */
+function cleanTime(s) {
+  if (!s) return s;
+  return String(s).replace(/\b(\d{1,2}):(\d{2}):00\b/g, "$1:$2").trim();
+}
+
+/** Keep any time token out of result, handle placeholders, clean date & time */
 function normaliseFixtures(rows) {
   return (rows || []).map((f) => {
-    let time = (f.time || "").trim();
+    let date   = cleanDate(f.date);
+    let time   = cleanTime(f.time || "");
     let result = (f.result || "").trim();
 
     // Move embedded times from result → time
     const timeTokens = (result + " " + time).match(/\b\d{1,2}:\d{2}(?::\d{2})?\b/g);
-    if (!time && timeTokens?.length) time = timeTokens[0];
+    if (!time && timeTokens?.length) time = cleanTime(timeTokens[0]);
     if (timeTokens?.length) result = result.replace(/\b\d{1,2}:\d{2}(?::\d{2})?\b/g, "").trim();
 
-    // Clean placeholders
+    // Clean placeholders (no result yet)
     if (/^(?:-|v|vs|vs\.|tbc|tba)$/i.test(result)) result = "";
 
-    return { ...f, time, result };
+    return { ...f, date, time, result };
   });
 }
 
@@ -33,11 +51,12 @@ function htmlPage({ standings, fixtures }) {
   const past = fixtures.filter((f) => !!f.result);
 
   const row = (f, showResult) => {
-    const home = (f.home || "");
-    const away = (f.away || "");
+    const home = f.home || "";
+    const away = f.away || "";
     const nessHome = isNess(home);
     const opponent = nessHome ? away : home;
-    const location = nessHome ? "HOME (Fivepenny)" : `AWAY at ${home}`;
+    const location = nessHome ? "HOME (Fivepenny)" : (f.ground || `AWAY at ${home}`);
+
     return `
       <tr>
         <td>${f.date || "-"}</td>
@@ -127,7 +146,6 @@ function htmlPage({ standings, fixtures }) {
 }
 
 function svgCard({ standings, fixtures }) {
-  // Show up to 8 upcoming fixtures
   const up = fixtures.filter((f) => !f.result).slice(0, 8);
 
   // Layout
@@ -198,7 +216,10 @@ function svgCard({ standings, fixtures }) {
 
   const standings = Array.isArray(data.standings) ? data.standings : [];
   let fixtures = Array.isArray(data.fixtures) ? data.fixtures : [];
+
+  // Normalise then sort by date+time
   fixtures = normaliseFixtures(fixtures);
+  fixtures.sort((a, b) => (a.date + (a.time || "")).localeCompare(b.date + (b.time || "")));
 
   fs.mkdirSync("./public", { recursive: true });
 
