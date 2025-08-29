@@ -12,9 +12,8 @@ const COLORS = {
   cream: "#f6f1de",
   header: "#4f6a2d",
   text: "#222222",
-  sub: "#444444",
   ness: "#2f7d2f",
-  footer: "#0e0e0e"
+  footer: "#000000"
 };
 
 function weekday(iso) {
@@ -23,47 +22,38 @@ function weekday(iso) {
   return new Date(y, m - 1, d).toLocaleDateString("en-GB", { weekday: "long" });
 }
 
-function fmtFixtureLine(f) {
-  const wd = weekday(f.date);
-  const dt = `${f.date}${f.time ? " " + f.time : ""}`;
-  return `${wd} ${dt} – ${f.home} vs ${f.away}`;
-}
-
-/** Builds the cream-themed SVG card */
 export function buildSVG({ standings, fixtures, updatedAt }) {
-  const W = 900, H = 1200, M = 48;
-  const headerH = 96;
+  const W = 800, H = 1000, M = 60;
+  const headerH = 80;
 
-  // Next N fixtures (change N easily)
-  const SHOW_N = 3;
-  const upcoming = fixtures.filter(f => !f.result).slice(0, SHOW_N);
+  // show next 3 fixtures
+  const upcoming = (fixtures || []).filter(f => !f.result).slice(0, 3);
 
+  // Standings list (left team, right points)
   const standingsRows = (standings || []).map((r, i) => {
-    const y = headerH + 110 + i * 36;
-    const nes = /ness/i.test(r.team);
-    const left = esc(`${i + 1}. ${r.team}`);
-    const right = esc(`${r.points} pts`);
+    const y = headerH + 100 + i * 28;
+    const nes = isNess(r.team);
     return `
-      <text x="${W/2 - 170}" y="${y}" font-size="22" font-weight="${nes ? "700" : "400"}"
-            fill="${nes ? COLORS.ness : COLORS.text}">${left}</text>
-      <text x="${W/2 + 170}" y="${y}" font-size="22" text-anchor="end"
-            fill="${nes ? COLORS.ness : COLORS.text}">${right}</text>
+      <text x="${W/2 - 120}" y="${y}" font-size="20" font-weight="${nes ? "700" : "400"}"
+            fill="${nes ? COLORS.ness : COLORS.text}">${esc(`${i+1}. ${r.team}`)}</text>
+      <text x="${W/2 + 120}" y="${y}" font-size="20" text-anchor="end"
+            fill="${nes ? COLORS.ness : COLORS.text}">${esc(r.points + " pts")}</text>
     `;
   }).join("");
 
-  const fxRows = (upcoming.length ? upcoming : fixtures.slice(0, SHOW_N))
-    .map((f, i) => {
-      const y = headerH + 410 + i * 90;  // generous spacing like your mock
-      const line = fmtFixtureLine(f);
-      const homeIsNess = isNess(f.home);
-      return `
-        <text x="${W/2}" y="${y}" font-size="26" text-anchor="middle"
-              font-weight="${homeIsNess ? "700" : "500"}"
-              fill="${homeIsNess ? COLORS.ness : COLORS.text}">
-          ${esc(line)}
-        </text>
-      `;
-    }).join("");
+  // Fixtures list stacked
+  const fxRows = upcoming.map((f, i) => {
+    const y = headerH + 360 + i * 80;
+    const homeIsNess = isNess(f.home);
+    const line = `${weekday(f.date)} ${f.date} ${f.time || ""} – ${f.home} vs ${f.away}`;
+    return `
+      <text x="${W/2}" y="${y}" font-size="22" text-anchor="middle"
+            font-weight="${homeIsNess ? "700" : "500"}"
+            fill="${homeIsNess ? COLORS.ness : COLORS.text}">
+        ${esc(line)}
+      </text>
+    `;
+  }).join("");
 
   const updated = new Date(updatedAt || Date.now())
     .toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
@@ -73,30 +63,27 @@ export function buildSVG({ standings, fixtures, updatedAt }) {
   <rect width="${W}" height="${H}" fill="${COLORS.cream}"/>
 
   <!-- Header -->
-  <rect x="0" y="24" width="${W}" height="${headerH}" rx="2" fill="${COLORS.header}"/>
-  <text x="${W/2}" y="${24 + headerH/2 + 10}" font-size="40" font-weight="800" fill="#fff" text-anchor="middle">
-    ${esc("NESS FC FIXTURES & LEAGUE TABLE")}
+  <rect x="0" y="0" width="${W}" height="${headerH}" fill="${COLORS.header}"/>
+  <text x="${W/2}" y="${headerH/2 + 10}" font-size="28" font-weight="800" fill="#fff" text-anchor="middle">
+    NESS FC FIXTURES & LEAGUE TABLE
   </text>
 
-  <!-- League title -->
-  <text x="${W/2}" y="${headerH + 70}" font-size="30" font-weight="700" fill="${COLORS.text}" text-anchor="middle">
+  <!-- League Standings -->
+  <text x="${W/2}" y="${headerH + 50}" font-size="24" font-weight="700" fill="${COLORS.text}" text-anchor="middle">
     League Standings
   </text>
-
-  <!-- Standings panel outline -->
-  <rect x="${M}" y="${headerH + 80}" width="${W - 2*M}" height="340" fill="none" stroke="#cfd8c0"/>
-
   ${standingsRows}
 
-  <!-- Upcoming title -->
-  <text x="${W/2}" y="${headerH + 380}" font-size="30" font-weight="700" fill="${COLORS.text}" text-anchor="middle">
+  <!-- Upcoming Fixtures -->
+  <text x="${W/2}" y="${headerH + 310}" font-size="24" font-weight="700" fill="${COLORS.text}" text-anchor="middle">
     Upcoming Fixtures
   </text>
-
   ${fxRows}
 
   <!-- Footer -->
-  <rect x="0" y="${H - 60}" width="${W}" height="60" fill="${COLORS.footer}"/>
-  <text x="${W/2}" y="${H - 22}" font-size="20" fill="#ffffff" text-anchor="middle">Updated ${esc(updated)}</text>
+  <rect x="0" y="${H - 40}" width="${W}" height="40" fill="${COLORS.footer}"/>
+  <text x="${W/2}" y="${H - 15}" font-size="16" fill="#ffffff" text-anchor="middle">
+    Updated ${esc(updated)}
+  </text>
 </svg>`;
 }
