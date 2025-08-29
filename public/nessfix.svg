@@ -36,13 +36,13 @@
 
   <!-- Fixtures -->
   <text x="477" y="180" font-size="18" font-weight="400" fill="#111">Point vs Ness</text>
-              <text x="848" y="180" font-size="18" text-anchor="end" fill="#444">2025-08-29 18:30:0029/08/2025 18:30</text>
+              <text x="848" y="180" font-size="18" text-anchor="end" fill="#444">2025-08-29 18:30</text>
 <text x="477" y="212" font-size="18" font-weight="400" fill="#111">Lochs vs Ness</text>
-              <text x="848" y="212" font-size="18" text-anchor="end" fill="#444">2025-09-01 18:30:0001/09/2025 18:30</text>
+              <text x="848" y="212" font-size="18" text-anchor="end" fill="#444">2025-09-01 18:30</text>
 <text x="477" y="244" font-size="18" font-weight="700" fill="#008000">Ness vs Harris</text>
-              <text x="848" y="244" font-size="18" text-anchor="end" fill="#444">2025-09-05 18:30:0005/09/2025 18:30</text>
+              <text x="848" y="244" font-size="18" text-anchor="end" fill="#444">2025-09-05 18:30</text>
 <text x="477" y="276" font-size="18" font-weight="400" fill="#111">Westside vs Ness</text>
-              <text x="848" y="276" font-size="18" text-anchor="end" fill="#444">2025-09-13 18:30:0013/09/2025 18:30</text>
+              <text x="848" y="276" font-size="18" text-anchor="end" fill="#444">2025-09-13 18:30</text>
 
   <!-- Footer -->
   <text x="450" y="1180" font-size="14" fill="#333" text-anchor="middle">

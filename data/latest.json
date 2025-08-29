@@ -48,7 +48,7 @@
   ],
   "fixtures": [
     {
-      "date": "2025-04-11 18:30:0011/04/2025",
+      "date": "2025-04-11",
       "time": "",
       "home": "Athletic",
       "away": "Ness",
@@ -56,7 +56,7 @@
       "ground": "Goathill Park, Stornoway"
     },
     {
-      "date": "2025-04-14 18:30:0014/04/2025",
+      "date": "2025-04-14",
       "time": "",
       "home": "Ness",
       "away": "Carloway",
@@ -64,7 +64,7 @@
       "ground": "Fivepenny, Ness"
     },
     {
-      "date": "2025-05-07 19:00:0007/05/2025",
+      "date": "2025-05-07",
       "time": "",
       "home": "Back",
       "away": "Ness",
@@ -72,7 +72,7 @@
       "ground": "Col Uarach, Back"
     },
     {
-      "date": "2025-05-14 19:00:0014/05/2025",
+      "date": "2025-05-14",
       "time": "",
       "home": "Ness",
       "away": "Lochs",
@@ -80,7 +80,7 @@
       "ground": "Fivepenny, Ness"
     },
     {
-      "date": "2025-05-19 19:00:0019/05/2025",
+      "date": "2025-05-19",
       "time": "",
       "home": "United",
       "away": "Ness",
@@ -88,7 +88,7 @@
       "ground": "Goathill Park, Stornoway"
     },
     {
-      "date": "2025-05-23 19:00:0023/05/2025",
+      "date": "2025-05-23",
       "time": "",
       "home": "Ness",
       "away": "Point",
@@ -96,7 +96,7 @@
       "ground": "Fivepenny, Ness"
     },
     {
-      "date": "2025-06-13 19:00:0013/06/2025",
+      "date": "2025-06-13",
       "time": "",
       "home": "Ness",
       "away": "Westside",
@@ -104,7 +104,7 @@
       "ground": "Fivepenny, Ness"
     },
     {
-      "date": "2025-06-16 19:00:0016/06/2025",
+      "date": "2025-06-16",
       "time": "",
       "home": "Ness",
       "away": "Athletic",
@@ -112,7 +112,7 @@
       "ground": "Fivepenny, Ness"
     },
     {
-      "date": "2025-06-23 19:00:0023/06/2025",
+      "date": "2025-06-23",
       "time": "",
       "home": "Carloway",
       "away": "Ness",
@@ -120,7 +120,7 @@
       "ground": "Cnoc a’ Choilich, Carloway"
     },
     {
-      "date": "2025-07-04 19:00:0004/07/2025",
+      "date": "2025-07-04",
       "time": "",
       "home": "Harris",
       "away": "Ness",
@@ -128,7 +128,7 @@
       "ground": "Rally Park, Tarbert"
     },
     {
-      "date": "2025-07-25 19:00:0025/07/2025",
+      "date": "2025-07-25",
       "time": "",
       "home": "Ness",
       "away": "Back",
@@ -136,7 +136,7 @@
       "ground": "Fivepenny, Ness"
     },
     {
-      "date": "2025-08-22 18:30:0022/08/2025",
+      "date": "2025-08-22",
       "time": "",
       "home": "Ness",
       "away": "United",
@@ -144,7 +144,7 @@
       "ground": "Fivepenny, Ness"
     },
     {
-      "date": "2025-08-29 18:30:0029/08/2025",
+      "date": "2025-08-29",
       "time": "18:30",
       "home": "Point",
       "away": "Ness",
@@ -152,7 +152,7 @@
       "ground": "Garrabost, Point"
     },
     {
-      "date": "2025-09-01 18:30:0001/09/2025",
+      "date": "2025-09-01",
       "time": "18:30",
       "home": "Lochs",
       "away": "Ness",
@@ -160,7 +160,7 @@
       "ground": "Creagan Dubh, Lochs"
     },
     {
-      "date": "2025-09-05 18:30:0005/09/2025",
+      "date": "2025-09-05",
       "time": "18:30",
       "home": "Ness",
       "away": "Harris",
@@ -168,7 +168,7 @@
       "ground": "Fivepenny, Ness"
     },
     {
-      "date": "2025-09-13 18:30:0013/09/2025",
+      "date": "2025-09-13",
       "time": "18:30",
       "home": "Westside",
       "away": "Ness",
