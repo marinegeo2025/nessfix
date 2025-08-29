@@ -9,15 +9,15 @@
     "dev": "npx serve public -l 3000"
   },
   "dependencies": {
+    "@resvg/resvg-js": "^2.6.1",
     "@sparticuz/chromium": "126.0.0",
     "puppeteer-core": "22.12.1"
-    "@resvg/resvg-js": "^2.6.1"
   },
   "devDependencies": {
     "puppeteer": "22.12.1",
     "serve": "^14.2.3"
   },
   "engines": {
-    "node": ">=18"
+    "node": "22.x"
   }
 }
