@@ -9,11 +9,11 @@
     "dev": "npx serve public -l 3000"
   },
   "dependencies": {
-    "@sparticuz/chromium": "^124.0.0",
-    "puppeteer-core": "^22.12.1"
+    "@sparticuz/chromium": "126.0.0",
+    "puppeteer-core": "22.12.1"
   },
   "devDependencies": {
-    "puppeteer": "^22.12.1",
+    "puppeteer": "22.12.1",
     "serve": "^14.2.3"
   },
   "engines": {
