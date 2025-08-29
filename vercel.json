@@ -1,4 +1,10 @@
 {
-  "buildCommand": "echo \"Static deploy – using prebuilt /public\"",
-  "outputDirectory": "public"
+  "outputDirectory": "public",
+  "functions": {
+    "api/*.js": {
+      "runtime": "nodejs18.x",
+      "memory": 1024,
+      "maxDuration": 60
+    }
+  }
 }
