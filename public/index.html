@@ -8,120 +8,208 @@
     :root { --green:#008000; }
     body { font-family: Arial, sans-serif; margin: 20px; background: #f9f9f9; color: #111; }
     h1 { background: var(--green); color: white; padding: 10px; text-align: center; }
-    h2 { margin-top: 30px; border-bottom: 2px solid var(--green); padding-bottom: 5px; }
+    h2 { margin-top: 40px; border-bottom: 2px solid var(--green); padding-bottom: 5px; }
     table { width: 100%; border-collapse: collapse; margin-top: 10px; background:white; }
     th, td { padding: 8px; border: 1px solid #ccc; text-align: center; }
     tr:nth-child(even) { background: #f2f2f2; }
     .ness { background: #c6f6c6; font-weight: bold; }
     .home { color: var(--green); font-weight: bold; }
-    .card { text-align:center; margin-top:20px; }
-    .card img { max-width: 100%; border: 2px solid var(--green); }
-    .updated { text-align:center; font-size: 12px; color: #555; }
-    .muted { color:#666; font-size: 12px; text-align:center; }
+    .card { text-align:center; margin-top:30px; }
+    .card img, .card object { max-width: 90%; border: 2px solid var(--green); }
+    .grid { display:grid; gap:20px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+    .standings { overflow:auto; }
   </style>
 </head>
 <body>
   <h1>NessFix – League Table & Fixtures</h1>
 
   <div class="card">
-    <h2>Fixture Card</h2>
-    <p>
-      <a id="dl-svg" href="/api/card.svg">📥 Download SVG</a> ·
-      <a id="dl-png" href="/api/card.png">📥 Download PNG</a>
-    </p>
-    <img id="card" src="/api/card.svg" alt="NessFix Card" />
-    <p class="updated" id="updated">Loading…</p>
+    <h2>Fixture Card (SVG)</h2>
+    <p><a href="/nessfix.svg" download>📥 Download Fixture Card (SVG)</a></p>
+    <object data="/nessfix.svg" type="image/svg+xml" aria-label="NessFix Card"></object>
   </div>
 
-  <h2>League Standings</h2>
-  <table id="standings" aria-live="polite">
-    <thead><tr><th>Pos</th><th>Team</th><th>Points</th></tr></thead>
-    <tbody><tr><td colspan="3" class="muted">Loading…</td></tr></tbody>
-  </table>
+  <div class="grid">
+    <section class="standings">
+      <h2>League Standings</h2>
+      <table>
+        <tr><th>Pos</th><th>Team</th><th>Points</th></tr>
+        
+        <tr class="">
+          <td>1</td><td>Westside</td><td>29</td>
+        </tr>
+        <tr class="">
+          <td>2</td><td>Back</td><td>27</td>
+        </tr>
+        <tr class="">
+          <td>3</td><td>Point</td><td>23</td>
+        </tr>
+        <tr class="">
+          <td>4</td><td>Carloway</td><td>23</td>
+        </tr>
+        <tr class="">
+          <td>5</td><td>Athletic</td><td>21</td>
+        </tr>
+        <tr class="ness">
+          <td>6</td><td>Ness</td><td>15</td>
+        </tr>
+        <tr class="">
+          <td>7</td><td>Lochs</td><td>12</td>
+        </tr>
+        <tr class="">
+          <td>8</td><td>Harris</td><td>12</td>
+        </tr>
+        <tr class="">
+          <td>9</td><td>United</td><td>4</td>
+        </tr>
+      </table>
+    </section>
 
-  <h2>Upcoming Ness Fixtures <span id="up-count" class="muted"></span></h2>
-  <table id="upcoming">
-    <thead>
-      <tr><th>Date</th><th>Weekday</th><th>Time</th><th>Opponent</th><th>Location</th><th>Result</th></tr>
-    </thead>
-    <tbody><tr><td colspan="6" class="muted">Loading…</td></tr></tbody>
-  </table>
+    <section>
+      <h2>Upcoming Ness Fixtures (4)</h2>
+      <table>
+        <tr><th>Date</th><th>Weekday</th><th>Time</th><th>Opponent</th><th>Location</th><th>Result</th></tr>
+        
+      <tr>
+        <td>2025-08-29</td>
+        <td>Friday</td>
+        <td>18:30</td>
+        <td>Point</td>
+        <td class="">Garrabost, Point</td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>2025-09-01</td>
+        <td>Monday</td>
+        <td>18:30</td>
+        <td>Lochs</td>
+        <td class="">Creagan Dubh, Lochs</td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>2025-09-05</td>
+        <td>Friday</td>
+        <td>18:30</td>
+        <td>Harris</td>
+        <td class="home">HOME (Fivepenny)</td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>2025-09-13</td>
+        <td>Saturday</td>
+        <td>18:30</td>
+        <td>Westside</td>
+        <td class="">Barvas Hall, Barvas</td>
+        <td>-</td>
+      </tr>
+      </table>
 
-  <h2>All Ness Fixtures</h2>
-  <table id="all">
-    <thead>
-      <tr><th>Date</th><th>Weekday</th><th>Time</th><th>Opponent</th><th>Location</th><th>Result</th></tr>
-    </thead>
-    <tbody><tr><td colspan="6" class="muted">Loading…</td></tr></tbody>
-  </table>
+      <h2>Past Ness Results (12)</h2>
+      <table>
+        <tr><th>Date</th><th>Weekday</th><th>Time</th><th>Opponent</th><th>Location</th><th>Result</th></tr>
+        
+      <tr>
+        <td>2025-04-11</td>
+        <td>Friday</td>
+        <td>-</td>
+        <td>Athletic</td>
+        <td class="">Goathill Park, Stornoway</td>
+        <td>0 - 1</td>
+      </tr>
+      <tr>
+        <td>2025-04-14</td>
+        <td>Monday</td>
+        <td>-</td>
+        <td>Carloway</td>
+        <td class="home">HOME (Fivepenny)</td>
+        <td>1 - 2</td>
+      </tr>
+      <tr>
+        <td>2025-05-07</td>
+        <td>Wednesday</td>
+        <td>-</td>
+        <td>Back</td>
+        <td class="">Col Uarach, Back</td>
+        <td>4 - 1</td>
+      </tr>
+      <tr>
+        <td>2025-05-14</td>
+        <td>Wednesday</td>
+        <td>-</td>
+        <td>Lochs</td>
+        <td class="home">HOME (Fivepenny)</td>
+        <td>4 - 2</td>
+      </tr>
+      <tr>
+        <td>2025-05-19</td>
+        <td>Monday</td>
+        <td>-</td>
+        <td>United</td>
+        <td class="">Goathill Park, Stornoway</td>
+        <td>2 - 4</td>
+      </tr>
+      <tr>
+        <td>2025-05-23</td>
+        <td>Friday</td>
+        <td>-</td>
+        <td>Point</td>
+        <td class="home">HOME (Fivepenny)</td>
+        <td>1 - 3</td>
+      </tr>
+      <tr>
+        <td>2025-06-13</td>
+        <td>Friday</td>
+        <td>-</td>
+        <td>Westside</td>
+        <td class="home">HOME (Fivepenny)</td>
+        <td>2 - 3</td>
+      </tr>
+      <tr>
+        <td>2025-06-16</td>
+        <td>Monday</td>
+        <td>-</td>
+        <td>Athletic</td>
+        <td class="home">HOME (Fivepenny)</td>
+        <td>1 - 2</td>
+      </tr>
+      <tr>
+        <td>2025-06-23</td>
+        <td>Monday</td>
+        <td>-</td>
+        <td>Carloway</td>
+        <td class="">Cnoc a’ Choilich, Carloway</td>
+        <td>2 - 0</td>
+      </tr>
+      <tr>
+        <td>2025-07-04</td>
+        <td>Friday</td>
+        <td>-</td>
+        <td>Harris</td>
+        <td class="">Rally Park, Tarbert</td>
+        <td>3 - 1</td>
+      </tr>
+      <tr>
+        <td>2025-07-25</td>
+        <td>Friday</td>
+        <td>-</td>
+        <td>Back</td>
+        <td class="home">HOME (Fivepenny)</td>
+        <td>4 - 3</td>
+      </tr>
+      <tr>
+        <td>2025-08-22</td>
+        <td>Friday</td>
+        <td>-</td>
+        <td>United</td>
+        <td class="home">HOME (Fivepenny)</td>
+        <td>5 - 0</td>
+      </tr>
+      </table>
+    </section>
+  </div>
 
-  <script>
-    const isNess = (s) => /^(?:ness)$/i.test((s||"").trim());
-    const weekday = (iso) => {
-      const [y,m,d] = (iso||"").split("-").map(Number);
-      if (!y||!m||!d) return "-";
-      return new Date(y, m-1, d).toLocaleDateString("en-GB", { weekday: "long" });
-    };
-    const tr = (html) => { const t=document.createElement("tr"); t.innerHTML=html; return t; };
-
-    (async function load() {
-      try {
-        const res = await fetch("/api/latest", { cache: "no-store" });
-        if (!res.ok) throw new Error("Failed to fetch /api/latest");
-        const data = await res.json();
-
-        // Cache-busting param + human-readable timestamp
-        const tsParam  = encodeURIComponent(data.updatedAt || new Date().toISOString());
-        const tsHuman  = new Date(data.updatedAt || Date.now()).toLocaleString("en-GB");
-        document.getElementById("card").src     = "/api/card.svg?ts=" + tsParam;
-        document.getElementById("dl-svg").href  = "/api/card.svg?ts=" + tsParam;
-        document.getElementById("dl-png").href  = "/api/card.png?ts=" + tsParam;
-        document.getElementById("updated").textContent = "Last updated: " + tsHuman;
-
-        // Standings
-        const stBody = document.querySelector("#standings tbody");
-        stBody.innerHTML = "";
-        (data.standings||[]).forEach((row) => {
-          const el = tr(`<td>${row.pos}</td><td>${row.team}</td><td>${row.points}</td>`);
-          if (/ness/i.test(row.team)) el.className = "ness";
-          stBody.appendChild(el);
-        });
-
-        // Fixtures
-        const fixtures = Array.isArray(data.fixtures) ? data.fixtures.slice() : [];
-        const upcoming = fixtures.filter(f => !f.result);
-        document.getElementById("up-count").textContent = `(${upcoming.length})`;
-
-        const upBody = document.querySelector("#upcoming tbody");
-        const allBody = document.querySelector("#all tbody");
-        upBody.innerHTML = ""; allBody.innerHTML = "";
-
-        const paint = (f, showResult) => {
-          const home = f.home || "";
-          const away = f.away || "";
-          const nessHome = isNess(home);
-          const opponent = nessHome ? away : home;
-          const location = nessHome ? "HOME (Fivepenny)" : (f.ground || `AWAY at ${home}`);
-          const resCell = showResult ? (f.result || "-") : "-";
-          return tr(
-            `<td>${f.date || "-"}</td>
-             <td>${weekday(f.date)}</td>
-             <td>${f.time || "-"}</td>
-             <td>${opponent || "-"}</td>
-             <td class="${nessHome ? "home" : ""}">${location}</td>
-             <td>${resCell}</td>`
-          );
-        };
-
-        upcoming.slice(0, 8).forEach(f => upBody.appendChild(paint(f, false)));
-        fixtures.forEach(f => allBody.appendChild(paint(f, !!f.result)));
-
-      } catch (err) {
-        console.error(err);
-        document.getElementById("updated").textContent = "Could not load latest data. Please refresh.";
-        // Leave the tables' "Loading…" rows in place as a visual hint
-      }
-    })();
-  </script>
+  <p style="margin-top:40px; font-size:12px; text-align:center;">
+    Data source: LHFA • Last built: 29/08/2025, 14:24:34
+  </p>
 </body>
 </html>

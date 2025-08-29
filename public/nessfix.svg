@@ -8,13 +8,11 @@
   </defs>
   <rect x="0" y="0" width="900" height="1200" fill="#ffffff"/>
   <rect x="0" y="0" width="900" height="110" fill="url(#g)"/>
-  <text x="450" y="65" font-size="36" font-weight="700" fill="#fff" text-anchor="middle">NESSFIX — Fixtures & League Table</text>
+  <text x="450" y="65" font-size="36" font-weight="700" fill="#fff" text-anchor="middle">NESSFIX — Fixtures &amp; League Table</text>
 
-  <!-- Columns titles -->
   <text x="52" y="134" font-size="22" font-weight="700" fill="#111">League Standings</text>
   <text x="477" y="134" font-size="22" font-weight="700" fill="#111">Upcoming Fixtures</text>
 
-  <!-- Standings -->
   <text x="52" y="180" font-size="20" font-weight="400" fill="#111">1. Westside</text>
               <text x="423" y="180" font-size="20" text-anchor="end" fill="#111">29 pts</text>
 <text x="52" y="208" font-size="20" font-weight="400" fill="#111">2. Back</text>
@@ -33,8 +31,6 @@
               <text x="423" y="376" font-size="20" text-anchor="end" fill="#111">12 pts</text>
 <text x="52" y="404" font-size="20" font-weight="400" fill="#111">9. United</text>
               <text x="423" y="404" font-size="20" text-anchor="end" fill="#111">4 pts</text>
-
-  <!-- Fixtures -->
   <text x="477" y="180" font-size="18" font-weight="400" fill="#111">Point vs Ness</text>
               <text x="848" y="180" font-size="18" text-anchor="end" fill="#444">2025-08-29 18:30</text>
 <text x="477" y="212" font-size="18" font-weight="400" fill="#111">Lochs vs Ness</text>
@@ -44,7 +40,6 @@
 <text x="477" y="276" font-size="18" font-weight="400" fill="#111">Westside vs Ness</text>
               <text x="848" y="276" font-size="18" text-anchor="end" fill="#444">2025-09-13 18:30</text>
 
-  <!-- Footer -->
   <text x="450" y="1180" font-size="14" fill="#333" text-anchor="middle">
     Built 29/08/2025 • 4 upcoming shown
   </text>
