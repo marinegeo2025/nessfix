@@ -1,9 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
-    "api/*.js": {
-      "memory": 1024,
-      "maxDuration": 60
-    }
-  }
+    "api/*.js": { "memory": 1024, "maxDuration": 60 }
+  },
+  "crons": [
+    { "path": "/api/latest",   "schedule": "*/5 * * * *" },
+    { "path": "/api/card.svg", "schedule": "*/5 * * * *" }
+  ]
 }
