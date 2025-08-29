@@ -17,6 +17,7 @@
     .card { text-align:center; margin-top:20px; }
     .card img { max-width: 100%; border: 2px solid var(--green); }
     .updated { text-align:center; font-size: 12px; color: #555; }
+    .muted { color:#666; font-size: 12px; text-align:center; }
   </style>
 </head>
 <body>
@@ -24,22 +25,35 @@
 
   <div class="card">
     <h2>Fixture Card</h2>
-    <img id="card" src="/api/card.svg" alt="NessFix Card">
+    <p>
+      <a id="dl-svg" href="/api/card.svg">📥 Download SVG</a> ·
+      <a id="dl-png" href="/api/card.png">📥 Download PNG</a>
+    </p>
+    <img id="card" src="/api/card.svg" alt="NessFix Card" />
     <p class="updated" id="updated">Loading…</p>
   </div>
 
   <h2>League Standings</h2>
-  <table id="standings"><thead><tr><th>Pos</th><th>Team</th><th>Points</th></tr></thead><tbody></tbody></table>
+  <table id="standings" aria-live="polite">
+    <thead><tr><th>Pos</th><th>Team</th><th>Points</th></tr></thead>
+    <tbody><tr><td colspan="3" class="muted">Loading…</td></tr></tbody>
+  </table>
 
-  <h2>Upcoming Ness Fixtures</h2>
-  <table id="upcoming"><thead>
-    <tr><th>Date</th><th>Weekday</th><th>Time</th><th>Opponent</th><th>Location</th><th>Result</th></tr>
-  </thead><tbody></tbody></table>
+  <h2>Upcoming Ness Fixtures <span id="up-count" class="muted"></span></h2>
+  <table id="upcoming">
+    <thead>
+      <tr><th>Date</th><th>Weekday</th><th>Time</th><th>Opponent</th><th>Location</th><th>Result</th></tr>
+    </thead>
+    <tbody><tr><td colspan="6" class="muted">Loading…</td></tr></tbody>
+  </table>
 
   <h2>All Ness Fixtures</h2>
-  <table id="all"><thead>
-    <tr><th>Date</th><th>Weekday</th><th>Time</th><th>Opponent</th><th>Location</th><th>Result</th></tr>
-  </thead><tbody></tbody></table>
+  <table id="all">
+    <thead>
+      <tr><th>Date</th><th>Weekday</th><th>Time</th><th>Opponent</th><th>Location</th><th>Result</th></tr>
+    </thead>
+    <tbody><tr><td colspan="6" class="muted">Loading…</td></tr></tbody>
+  </table>
 
   <script>
     const isNess = (s) => /^(?:ness)$/i.test((s||"").trim());
@@ -48,49 +62,65 @@
       if (!y||!m||!d) return "-";
       return new Date(y, m-1, d).toLocaleDateString("en-GB", { weekday: "long" });
     };
-
-    function tr(html){ const t=document.createElement("tr"); t.innerHTML=html; return t; }
+    const tr = (html) => { const t=document.createElement("tr"); t.innerHTML=html; return t; };
 
     (async function load() {
-      const res = await fetch("/api/latest", { cache: "no-store" });
-      const data = await res.json();
+      try {
+        const res = await fetch("/api/latest", { cache: "no-store" });
+        if (!res.ok) throw new Error("Failed to fetch /api/latest");
+        const data = await res.json();
 
-      // Updated timestamp
-      const ts = new Date(data.updatedAt).toLocaleString("en-GB");
-      document.getElementById("updated").textContent = "Last updated: " + ts;
+        // Cache-busting param + human-readable timestamp
+        const tsParam  = encodeURIComponent(data.updatedAt || new Date().toISOString());
+        const tsHuman  = new Date(data.updatedAt || Date.now()).toLocaleString("en-GB");
+        document.getElementById("card").src     = "/api/card.svg?ts=" + tsParam;
+        document.getElementById("dl-svg").href  = "/api/card.svg?ts=" + tsParam;
+        document.getElementById("dl-png").href  = "/api/card.png?ts=" + tsParam;
+        document.getElementById("updated").textContent = "Last updated: " + tsHuman;
 
-      // Standings
-      const stBody = document.querySelector("#standings tbody");
-      stBody.innerHTML = "";
-      (data.standings||[]).forEach((row, i) => {
-        const cls = /ness/i.test(row.team) ? " class=\"ness\"" : "";
-        stBody.appendChild(tr(`<td>${row.pos}</td><td>${row.team}</td><td>${row.points}</td>`));
-        if (cls) stBody.lastElementChild.className = "ness";
-      });
+        // Standings
+        const stBody = document.querySelector("#standings tbody");
+        stBody.innerHTML = "";
+        (data.standings||[]).forEach((row) => {
+          const el = tr(`<td>${row.pos}</td><td>${row.team}</td><td>${row.points}</td>`);
+          if (/ness/i.test(row.team)) el.className = "ness";
+          stBody.appendChild(el);
+        });
 
-      const fixtures = Array.isArray(data.fixtures) ? data.fixtures.slice() : [];
-      const upcoming = fixtures.filter(f => !f.result).slice(0, 8);
-      const allBody = document.querySelector("#all tbody");
-      const upBody  = document.querySelector("#upcoming tbody");
-      upBody.innerHTML = ""; allBody.innerHTML = "";
+        // Fixtures
+        const fixtures = Array.isArray(data.fixtures) ? data.fixtures.slice() : [];
+        const upcoming = fixtures.filter(f => !f.result);
+        document.getElementById("up-count").textContent = `(${upcoming.length})`;
 
-      const paint = (f, showResult) => {
-        const home = f.home || "";
-        const away = f.away || "";
-        const nessHome = isNess(home);
-        const opponent = nessHome ? away : home;
-        const location = nessHome ? "HOME (Fivepenny)" : (f.ground || `AWAY at ${home}`);
-        const resCell = showResult ? (f.result || "-") : "-";
-        const row = tr(`<td>${f.date || "-"}</td><td>${weekday(f.date)}</td><td>${f.time || "-"}</td><td>${opponent}</td><td class="${nessHome ? "home" : ""}">${location}</td><td>${resCell}</td>`);
-        return row;
-      };
+        const upBody = document.querySelector("#upcoming tbody");
+        const allBody = document.querySelector("#all tbody");
+        upBody.innerHTML = ""; allBody.innerHTML = "";
 
-      upcoming.forEach(f => upBody.appendChild(paint(f, false)));
-      fixtures.forEach(f => allBody.appendChild(paint(f, !!f.result)));
+        const paint = (f, showResult) => {
+          const home = f.home || "";
+          const away = f.away || "";
+          const nessHome = isNess(home);
+          const opponent = nessHome ? away : home;
+          const location = nessHome ? "HOME (Fivepenny)" : (f.ground || `AWAY at ${home}`);
+          const resCell = showResult ? (f.result || "-") : "-";
+          return tr(
+            `<td>${f.date || "-"}</td>
+             <td>${weekday(f.date)}</td>
+             <td>${f.time || "-"}</td>
+             <td>${opponent || "-"}</td>
+             <td class="${nessHome ? "home" : ""}">${location}</td>
+             <td>${resCell}</td>`
+          );
+        };
 
-      // Bust the card image cache so users see the fresh timestamp immediately
-      const card = document.getElementById("card");
-      card.src = "/api/card.svg?ts=" + encodeURIComponent(data.updatedAt);
+        upcoming.slice(0, 8).forEach(f => upBody.appendChild(paint(f, false)));
+        fixtures.forEach(f => allBody.appendChild(paint(f, !!f.result)));
+
+      } catch (err) {
+        console.error(err);
+        document.getElementById("updated").textContent = "Could not load latest data. Please refresh.";
+        // Leave the tables' "Loading…" rows in place as a visual hint
+      }
     })();
   </script>
 </body>
