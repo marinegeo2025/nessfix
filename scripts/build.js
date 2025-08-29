@@ -4,13 +4,22 @@ import fs from "fs";
 const NESS = /^(?:ness)$/i;
 const isNess = (s) => NESS.test((s || "").trim());
 
+/** XML escape for SVG text nodes and attributes */
+const esc = (s) =>
+  String(s ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+
 /** Extract a clean YYYY-MM-DD from mixed cells (e.g. "2025-08-29 18:30:0029/08/2025") */
 function cleanDate(s) {
   if (!s) return s;
   const str = String(s);
-  const iso = str.match(/(\d{4}-\d{2}-\d{2})/);                // 2025-08-29
+  const iso = str.match(/(\d{4}-\d{2}-\d{2})/);
   if (iso) return iso[1];
-  const dm = str.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);       // 29/08/2025
+  const dm = str.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
   if (dm) return `${dm[3]}-${String(dm[2]).padStart(2, "0")}-${String(dm[1]).padStart(2, "0")}`;
   return str.trim();
 }
@@ -158,8 +167,8 @@ function svgCard({ standings, fixtures }) {
     .map((r, i) => {
       const isN = /ness/i.test(r.team);
       const y = headerH + M + 30 + i * 28;
-      return `<text x="${M + 12}" y="${y}" font-size="20" font-weight="${isN ? "700" : "400"}" fill="${isN ? "#008000" : "#111"}">${i + 1}. ${r.team}</text>
-              <text x="${M + colW - 12}" y="${y}" font-size="20" text-anchor="end" fill="${isN ? "#008000" : "#111"}">${r.points} pts</text>`;
+      return `<text x="${M + 12}" y="${y}" font-size="20" font-weight="${isN ? "700" : "400"}" fill="${isN ? "#008000" : "#111"}">${esc(`${i + 1}. ${r.team}`)}</text>
+              <text x="${M + colW - 12}" y="${y}" font-size="20" text-anchor="end" fill="${isN ? "#008000" : "#111"}">${esc(`${r.points} pts`)}</text>`;
     })
     .join("\n");
 
@@ -169,10 +178,12 @@ function svgCard({ standings, fixtures }) {
       const homeIsNess = isNess(f.home);
       const matchup = `${f.home} vs ${f.away}`;
       const when = [f.date, f.time].filter(Boolean).join(" ");
-      return `<text x="${M + colW + colGap + 12}" y="${y}" font-size="18" font-weight="${homeIsNess ? "700" : "400"}" fill="${homeIsNess ? "#008000" : "#111"}">${matchup}</text>
-              <text x="${W - M - 12}" y="${y}" font-size="18" text-anchor="end" fill="#444">${when || "-"}</text>`;
+      return `<text x="${M + colW + colGap + 12}" y="${y}" font-size="18" font-weight="${homeIsNess ? "700" : "400"}" fill="${homeIsNess ? "#008000" : "#111"}">${esc(matchup)}</text>
+              <text x="${W - M - 12}" y="${y}" font-size="18" text-anchor="end" fill="#444">${esc(when || "-")}</text>`;
     })
     .join("\n");
+
+  const subtitle = `NESSFIX — Fixtures & League Table`;
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
@@ -184,21 +195,16 @@ function svgCard({ standings, fixtures }) {
   </defs>
   <rect x="0" y="0" width="${W}" height="${H}" fill="#ffffff"/>
   <rect x="0" y="0" width="${W}" height="${headerH}" fill="url(#g)"/>
-  <text x="${W / 2}" y="${headerH / 2 + 10}" font-size="36" font-weight="700" fill="#fff" text-anchor="middle">NESSFIX — Fixtures & League Table</text>
+  <text x="${W / 2}" y="${headerH / 2 + 10}" font-size="36" font-weight="700" fill="#fff" text-anchor="middle">${esc(subtitle)}</text>
 
-  <!-- Columns titles -->
   <text x="${M + 12}" y="${headerH + 24}" font-size="22" font-weight="700" fill="#111">League Standings</text>
   <text x="${M + colW + colGap + 12}" y="${headerH + 24}" font-size="22" font-weight="700" fill="#111">Upcoming Fixtures</text>
 
-  <!-- Standings -->
   ${sRows}
-
-  <!-- Fixtures -->
   ${fRows}
 
-  <!-- Footer -->
   <text x="${W / 2}" y="${H - 20}" font-size="14" fill="#333" text-anchor="middle">
-    Built ${new Date().toLocaleDateString("en-GB")} • ${up.length} upcoming shown
+    ${esc(`Built ${new Date().toLocaleDateString("en-GB")} • ${up.length} upcoming shown`)}
   </text>
   <rect x="${M}" y="${headerH + 10}" width="${colW}" height="${H - headerH - 60}" fill="none" stroke="#ddd"/>
   <rect x="${M + colW + colGap}" y="${headerH + 10}" width="${colW}" height="${H - headerH - 60}" fill="none" stroke="#ddd"/>
