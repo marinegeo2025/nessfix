@@ -63,6 +63,9 @@ export function buildSVG({ standings, fixtures, updatedAt }) {
   <style>
   text { font-family: Arial, Helvetica, "DejaVu Sans", sans-serif; }
   </style>
+  <style>
+  text { font-family: "Geogrotesque", Arial, sans-serif; }
+  </style>
 <rect width="${W}" height="${H}" fill="${COLORS.cream}"/>
 
   <!-- Header -->
