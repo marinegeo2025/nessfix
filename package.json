@@ -3,16 +3,24 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "engines": { "node": "20.x" },
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
-    "all": "node scripts/scrape.js && node scripts/build.js"
+    "scrape": "node scripts/scrape.js",
+    "build": "node scripts/build.js",
+    "all": "npm run scrape && npm run build",
+    "dev": "serve public -l 5173"
   },
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",
     "@sparticuz/chromium": "138.0.2",
+    "axios": "1.6.8",
+    "cheerio": "1.0.0-rc.12",
     "puppeteer-core": "^24.16.2"
   },
   "devDependencies": {
-    "puppeteer": "^24.16.2"
+    "puppeteer": "^24.16.2",
+    "serve": "^14.2.4"
   }
 }
