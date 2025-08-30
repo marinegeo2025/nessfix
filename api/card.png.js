@@ -9,9 +9,10 @@ export default async function handler(req, res) {
     const svg = buildSVG(data);
 
     const r = new Resvg(svg, {
-      fitTo: { mode: "width", value: 1200 }, // nice crisp PNG
-      textRendering: 1
-    });
+     fitTo: { mode: "width", value: 1200 },
+     textRendering: 1,
+     font: { loadSystemFonts: true }   // <-- allow fallback fonts if present
+   });
 
     const png = r.render().asPng();
 
