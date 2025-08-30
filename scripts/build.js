@@ -104,8 +104,8 @@ function htmlPage({ standings, fixtures }) {
 
   <div class="card">
     <h2>Fixture Card (SVG)</h2>
-    <p><a href="/nessfix.svg" download>📥 Download Fixture Card (SVG)</a></p>
-    <object data="/nessfix.svg" type="image/svg+xml" aria-label="NessFix Card"></object>
+    <p><a href="/api/card.png" download="nessfix-card.png">📥 Download Fixture Card (PNG)</a></p>
+    <img src="/api/card.png" alt="NessFix Card" style="max-width:90%; border:2px solid var(--green);" />
   </div>
 
   <div class="grid">
