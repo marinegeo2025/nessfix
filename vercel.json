@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
-    "api/*.js": { "memory": 1024, "maxDuration": 60 }
+    "api/*.js": { "runtime": "nodejs20.x", "memory": 1024, "maxDuration": 60 }
   },
   "crons": [
     { "path": "/api/latest",   "schedule": "*/5 * * * *" },
