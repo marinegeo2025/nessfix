@@ -158,7 +158,7 @@ function svgCard({ standings, fixtures }) {
   const W = 800, H = 1000;
   const COLORS = {
     cream: "#f6f1de",
-    header: "#4f6a2d",
+    header: "#2f7d2f",
     text: "#222222",
     ness: "#2f7d2f",
     footer: "#000000"
