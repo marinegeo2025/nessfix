@@ -6,8 +6,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const fontRegularPath = path.join(__dirname, "..", "fonts", "GeogrotesqueCompTRIAL-Rg.otf");
-const fontBoldPath    = path.join(__dirname, "..", "fonts", "GeogrotesqueCondTRIAL-Bd.otf");
+const fontRegularPath = path.join(__dirname, "..", "fonts", "CORBEL.TTF");
+const fontBoldPath    = path.join(__dirname, "..", "fonts", "CORBELB.TTF");
 
 export default async function handler(req, res) {
   try {
@@ -15,17 +15,17 @@ export default async function handler(req, res) {
     const svg = buildSVG(data);
 
     const r = new Resvg(svg, {
-      fitTo: { mode: "width", value: 1200 },
-      textRendering: 1,
-      font: {
-        // Let Resvg find any available fallback fonts too
-        loadSystemFonts: true,
-        // Primary fonts we ship with the repo
-        fontFiles: [fontRegularPath, fontBoldPath],
-        // This must match the family in the <style> block
-        defaultFontFamily: "Geogrotesque",
-      },
-    });
+  fitTo: { mode: "width", value: 1200 },
+  textRendering: 1,
+  font: {
+    loadSystemFonts: true,
+    fontFiles: [
+      fontRegularPath,
+      fontBoldPath
+    ],
+    defaultFontFamily: "Corbel"
+  }
+});
 
     const png = r.render().asPng();
     res.setHeader("Content-Type", "image/png");
