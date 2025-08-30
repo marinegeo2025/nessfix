@@ -3,15 +3,16 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "engines": { "node": "20.x" },
   "scripts": {
-    "scrape": "node scripts/scrape.js",
-    "build:html": "node scripts/build-html.js",
-    "build:card": "node scripts/build-card.js",
-    "build": "npm run scrape && npm run build:html && npm run build:card"
+    "all": "node scripts/scrape.js && node scripts/build.js"
   },
   "dependencies": {
-    "axios": "1.6.8",
-    "cheerio": "1.0.0-rc.12",
-    "canvas": "2.11.2"
+    "@resvg/resvg-js": "^2.6.2",
+    "@sparticuz/chromium": "138.0.2",
+    "puppeteer-core": "^24.16.2"
+  },
+  "devDependencies": {
+    "puppeteer": "^24.16.2"
   }
 }
