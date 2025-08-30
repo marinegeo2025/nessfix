@@ -61,7 +61,7 @@ export function buildSVG({ standings, fixtures, updatedAt }) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
   <style>
-    text { font-family: "Geogrotesque", Arial, Helvetica, sans-serif; }
+    text { font-family: "Corbel", Arial, Helvetica, sans-serif; }
   </style>
   <rect width="${W}" height="${H}" fill="${COLORS.cream}"/>
 
