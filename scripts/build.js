@@ -164,10 +164,19 @@ function svgCard({ standings, fixtures }) {
     footer: "#000000"
   };
 
+  const headerH = 80;
+  const rowH = 28;
+  const sectionGap = 30;      // gap between sections
+  const titleGap = 50;        // gap between a section title and its list
+
   const up = (fixtures || []).filter(f => !f.result).slice(0, 3);
 
+  // --- League Standings block ---
+  const standingsTitleY = headerH + 50;
+  const standingsListY  = standingsTitleY + titleGap;
+
   const standingsRows = (standings || []).map((r, i) => {
-    const y = 80 + 100 + i * 28; // header 80 + top margin
+    const y = standingsListY + i * rowH;
     const nes = /^(?:ness)$/i.test((r.team || "").trim());
     return `
       <text x="${W/2 - 120}" y="${y}" font-size="20" font-weight="${nes ? "700" : "400"}"
@@ -177,12 +186,17 @@ function svgCard({ standings, fixtures }) {
     `;
   }).join("");
 
+  // compute where the next section should start (just below the last standings row)
+  const standingsHeight = (standings?.length || 0) * rowH;
+  const upcomingTitleY  = standingsListY + standingsHeight + sectionGap;
+  const fixturesListY   = upcomingTitleY + titleGap;
+
   const fxRows = up.map((f, i) => {
-    const y = 80 + 360 + i * 80;
+    const y = fixturesListY + i * 80; // keep big spacing for fixtures
     const homeIsNess = /^(?:ness)$/i.test((f.home || "").trim());
     const wd = (d => {
-      const [y,m,dd] = (d||"").split("-").map(Number);
-      return y && m && dd ? new Date(y,m-1,dd).toLocaleDateString("en-GB",{weekday:"long"}) : "-";
+      const [Y,M,D] = (d||"").split("-").map(Number);
+      return Y && M && D ? new Date(Y, M-1, D).toLocaleDateString("en-GB", { weekday:"long" }) : "-";
     })(f.date);
     const line = `${wd} ${f.date} ${f.time || ""} – ${f.home} vs ${f.away}`;
     return `
@@ -194,27 +208,31 @@ function svgCard({ standings, fixtures }) {
     `;
   }).join("");
 
-  const updated = new Date().toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"});
+  const updated = new Date().toLocaleDateString("en-GB", { day:"2-digit", month:"short", year:"numeric" });
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
   <rect width="${W}" height="${H}" fill="${COLORS.cream}"/>
 
-  <rect x="0" y="0" width="${W}" height="80" fill="${COLORS.header}"/>
-  <text x="${W/2}" y="${80/2 + 10}" font-size="28" font-weight="800" fill="#fff" text-anchor="middle">
+  <!-- Header bar -->
+  <rect x="0" y="0" width="${W}" height="${headerH}" fill="${COLORS.header}"/>
+  <text x="${W/2}" y="${headerH/2 + 10}" font-size="28" font-weight="800" fill="#fff" text-anchor="middle">
     NESS FC FIXTURES &amp; LEAGUE TABLE
   </text>
 
-  <text x="${W/2}" y="${80 + 50}" font-size="24" font-weight="700" fill="${COLORS.text}" text-anchor="middle">
+  <!-- Standings -->
+  <text x="${W/2}" y="${standingsTitleY}" font-size="24" font-weight="700" fill="${COLORS.text}" text-anchor="middle">
     League Standings
   </text>
   ${standingsRows}
 
-  <text x="${W/2}" y="${80 + 310}" font-size="24" font-weight="700" fill="${COLORS.text}" text-anchor="middle">
+  <!-- Upcoming -->
+  <text x="${W/2}" y="${upcomingTitleY}" font-size="24" font-weight="700" fill="${COLORS.text}" text-anchor="middle">
     Upcoming Fixtures
   </text>
   ${fxRows}
 
+  <!-- Footer -->
   <rect x="0" y="${H - 40}" width="${W}" height="40" fill="${COLORS.footer}"/>
   <text x="${W/2}" y="${H - 15}" font-size="16" fill="#ffffff" text-anchor="middle">Updated ${esc(updated)}</text>
 </svg>`;
