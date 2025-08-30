@@ -2,7 +2,6 @@
 import { scrapeLHFA } from "./_scrape.js";
 import { buildSVG } from "./_card-template.js";
 import { Resvg } from "@resvg/resvg-js";
-import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -15,20 +14,17 @@ export default async function handler(req, res) {
     const data = await scrapeLHFA();
     const svg = buildSVG(data);
 
-    const fontRegular = fs.readFileSync(fontRegularPath);
-    const fontBold    = fs.readFileSync(fontBoldPath);
-
     const r = new Resvg(svg, {
       fitTo: { mode: "width", value: 1200 },
       textRendering: 1,
       font: {
-        fontFiles: [
-          { file: fontRegular, family: "Geogrotesque", weight: 400 },
-        // If the bold OTF is a *condensed* style, weight mapping still works fine:
-          { file: fontBold,    family: "Geogrotesque", weight: 700 }
-        ],
-        defaultFontFamily: "Geogrotesque"
-      }
+        // Let Resvg find any available fallback fonts too
+        loadSystemFonts: true,
+        // Primary fonts we ship with the repo
+        fontFiles: [fontRegularPath, fontBoldPath],
+        // This must match the family in the <style> block
+        defaultFontFamily: "Geogrotesque",
+      },
     });
 
     const png = r.render().asPng();
