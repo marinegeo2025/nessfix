@@ -2,11 +2,13 @@
 <svg width="800" height="1000" viewBox="0 0 800 1000" xmlns="http://www.w3.org/2000/svg">
   <rect width="800" height="1000" fill="#f6f1de"/>
 
+  <!-- Header bar -->
   <rect x="0" y="0" width="800" height="80" fill="#4f6a2d"/>
   <text x="400" y="50" font-size="28" font-weight="800" fill="#fff" text-anchor="middle">
     NESS FC FIXTURES &amp; LEAGUE TABLE
   </text>
 
+  <!-- Standings -->
   <text x="400" y="130" font-size="24" font-weight="700" fill="#222222" text-anchor="middle">
     League Standings
   </text>
@@ -57,29 +59,31 @@
             fill="#222222">4 pts</text>
     
 
-  <text x="400" y="390" font-size="24" font-weight="700" fill="#222222" text-anchor="middle">
+  <!-- Upcoming -->
+  <text x="400" y="462" font-size="24" font-weight="700" fill="#222222" text-anchor="middle">
     Upcoming Fixtures
   </text>
   
-      <text x="400" y="440" font-size="22" text-anchor="middle"
+      <text x="400" y="512" font-size="22" text-anchor="middle"
             font-weight="500"
             fill="#222222">
         Monday 2025-09-01 18:30 – Lochs vs Ness
       </text>
     
-      <text x="400" y="520" font-size="22" text-anchor="middle"
+      <text x="400" y="592" font-size="22" text-anchor="middle"
             font-weight="700"
             fill="#2f7d2f">
         Friday 2025-09-05 18:30 – Ness vs Harris
       </text>
     
-      <text x="400" y="600" font-size="22" text-anchor="middle"
+      <text x="400" y="672" font-size="22" text-anchor="middle"
             font-weight="500"
             fill="#222222">
         Saturday 2025-09-13 18:30 – Westside vs Ness
       </text>
     
 
+  <!-- Footer -->
   <rect x="0" y="960" width="800" height="40" fill="#000000"/>
   <text x="400" y="985" font-size="16" fill="#ffffff" text-anchor="middle">Updated 30 Aug 2025</text>
 </svg>
