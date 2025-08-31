@@ -1,4 +1,5 @@
 // scripts/build.js
+import { SITE_TITLE, CARD_LABEL, CARD_TITLE } from "../lib/branding.js";
 import fs from "fs";
 
 const NESS = /^(?:ness)$/i;
@@ -81,7 +82,7 @@ function htmlPage({ standings, fixtures }) {
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Ness FC – League Table and Fixtures</title>
+  <title>${SITE_TITLE}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root { --green:#008000; }
@@ -100,8 +101,7 @@ function htmlPage({ standings, fixtures }) {
   </style>
 </head>
 <body>
-  import { SITE_TITLE, CARD_LABEL } from "../lib/branding.js";
-  <h1>${SITE_TITLE}</h1>
+    <h1>${SITE_TITLE}</h1>
   
   <div class="card">
     <h2>${CARD_LABEL}</h2>
