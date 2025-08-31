@@ -136,19 +136,51 @@ function htmlPage({ standings, fixtures }) {
 
   <div class="grid">
     <section class="standings">
-      <h2>League Standings</h2>
-      <table>
-        <tr><th>Pos</th><th>Team</th><th>Points</th></tr>
-        ${standings
-          .map(
-            (row) => `
-        <tr class="${/ness/i.test(row.team) ? "ness" : ""}">
-          <td>${row.pos}</td><td>${row.team}</td><td>${row.points}</td>
-        </tr>`
-          )
-          .join("")}
-      </table>
-    </section>
+  <h2>League Standings</h2>
+  <table>
+    ${(() => {
+      const hasFull =
+        standings.length &&
+        ["p","w","d","l","f","a","gd","points"].every(k => standings[0][k] != null && standings[0][k] !== "");
+
+      if (!hasFull) {
+        // Fallback: simple table as before
+        return `
+          <tr><th>Pos</th><th>Team</th><th>Points</th></tr>
+          ${standings.map(r => `
+            <tr class="${/ness/i.test(r.team) ? "ness" : ""}">
+              <td>${r.pos ?? ""}</td>
+              <td>${r.team ?? ""}</td>
+              <td>${r.points ?? ""}</td>
+            </tr>
+          `).join("")}
+        `;
+      }
+
+      // Full LHFA-style table
+      return `
+        <tr>
+          <th>#</th><th>Club</th><th>P</th><th>W</th><th>D</th><th>L</th>
+          <th>F</th><th>A</th><th>GD</th><th>Pts</th>
+        </tr>
+        ${standings.map(r => `
+          <tr class="${/ness/i.test(r.team) ? "ness" : ""}">
+            <td>${r.pos ?? ""}</td>
+            <td>${r.team ?? ""}</td>
+            <td>${r.p ?? ""}</td>
+            <td>${r.w ?? ""}</td>
+            <td>${r.d ?? ""}</td>
+            <td>${r.l ?? ""}</td>
+            <td>${r.f ?? ""}</td>
+            <td>${r.a ?? ""}</td>
+            <td>${r.gd ?? ""}</td>
+            <td>${r.points ?? ""}</td>
+          </tr>
+        `).join("")}
+      `;
+    })()}
+  </table>
+</section>
 
     <section>
       <h2>Upcoming Ness Fixtures (${up.length})</h2>
