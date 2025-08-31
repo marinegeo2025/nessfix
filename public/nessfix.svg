@@ -3,7 +3,7 @@
   <rect width="800" height="1000" fill="#f6f1de"/>
 
   <!-- Header bar -->
-  <rect x="0" y="0" width="800" height="80" fill="#4f6a2d"/>
+  <rect x="0" y="0" width="800" height="80" fill="#2f7d2f"/>
   <text x="400" y="50" font-size="28" font-weight="800" fill="#fff" text-anchor="middle">
     NESS FC FIXTURES &amp; LEAGUE TABLE
   </text>
@@ -85,5 +85,5 @@
 
   <!-- Footer -->
   <rect x="0" y="960" width="800" height="40" fill="#000000"/>
-  <text x="400" y="985" font-size="16" fill="#ffffff" text-anchor="middle">Updated 30 Aug 2025</text>
+  <text x="400" y="985" font-size="16" fill="#ffffff" text-anchor="middle">Updated 31 Aug 2025</text>
 </svg>
