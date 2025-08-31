@@ -74,22 +74,56 @@ export async function scrapeLHFA() {
 
     const { standings, fixturesRaw } = await page.evaluate(() => {
       const norm = (s) => (s || "").replace(/\s+/g, " ").trim();
+      const key  = (s) => (s || "").toLowerCase().replace(/[^a-z]/g, "");
       const out = { standings: [], fixturesRaw: [] };
       const tables = Array.from(document.querySelectorAll("table"));
 
+      // ---- League table (first table) - robust header mapping ----
       if (tables[0]) {
-        const rows = Array.from(tables[0].querySelectorAll("tbody tr, tr"));
+        const t = tables[0];
+
+        const headKeys = Array.from(
+          t.querySelectorAll("thead th, tr:first-child th, tr:first-child td")
+        ).map(el => key(el.textContent));
+
+        // Map header tokens to our fields
+        const mapHeader = (h) => {
+          if (!h) return "";
+          if (h === "club" || h === "team") return "team";
+          if (h === "pts"  || h === "points") return "points";
+          // keep known short codes as-is
+          if (["p","w","d","l","f","a","gd"].includes(h)) return h;
+          return "";
+        };
+        const cols = headKeys.map(mapHeader);
+
+        const rows = Array.from(t.querySelectorAll("tbody tr, tr"));
         for (const tr of rows) {
-          const tds = tr.querySelectorAll("td");
-          if (tds.length >= 3) {
-            const pos = norm(tds[0]?.textContent);
-            const team = norm(tds[1]?.textContent);
-            const points = norm(tds[tds.length - 1]?.textContent);
-            if (team) out.standings.push({ pos, team, points });
-          }
+          const tds = Array.from(tr.querySelectorAll("td"));
+          if (tds.length < 3) continue;
+
+          const cells = tds.map(td => norm(td.textContent));
+          // LHFA has a leading position number in col 0
+          const pos = cells[0];
+
+          const rec = { pos, team: "", points: "" };
+          cols.forEach((k, i) => {
+            if (!k) return;
+            const v = cells[i] ?? "";
+            if (k === "team")   rec.team   = v;
+            else if (k === "points") rec.points = v;
+            else rec[k] = v; // p,w,d,l,f,a,gd
+          });
+
+          // Fallbacks if headers weren't detected
+          if (!rec.team && cells[1])    rec.team   = cells[1];
+          if (!rec.points && cells.at(-1)) rec.points = cells.at(-1);
+
+          if (rec.team) out.standings.push(rec);
         }
       }
 
+      // ---- Fixtures table (unchanged) ----
       const fixturesTable = tables.find((t) => {
         const heads = Array.from(t.querySelectorAll("thead th, tr:first-child th, tr:first-child td"))
           .map((el) => norm(el.textContent).toLowerCase());
