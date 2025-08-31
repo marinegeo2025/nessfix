@@ -78,13 +78,48 @@ export async function scrapeLHFA() {
       const out = { standings: [], fixturesRaw: [] };
       const tables = Array.from(document.querySelectorAll("table"));
 
-      // ---- League table (first table) - robust header mapping ----
-      if (tables[0]) {
-        const t = tables[0];
+// League table (first table) — robust header mapping like the API
+if (tables[0]) {
+  const t = tables[0];
 
-        const headKeys = Array.from(
-          t.querySelectorAll("thead th, tr:first-child th, tr:first-child td")
-        ).map(el => key(el.textContent));
+  const headKeys = Array.from(
+    t.querySelectorAll("thead th, tr:first-child th, tr:first-child td")
+  ).map(el => key(el.textContent));
+
+  // Map header tokens to our fields
+  const mapHeader = (h) => {
+    if (!h) return "";
+    if (h === "club" || h === "team") return "team";
+    if (h === "pts"  || h === "points") return "points";
+    if (["p","w","d","l","f","a","gd"].includes(h)) return h; // play/win/draw/loss/for/against/goal-diff
+    return "";
+  };
+  const cols = headKeys.map(mapHeader);
+
+  const rows = Array.from(t.querySelectorAll("tbody tr, tr"));
+  for (const tr of rows) {
+    const tds = Array.from(tr.querySelectorAll("td"));
+    if (tds.length < 3) continue;
+
+    const cells = tds.map(td => norm(td.textContent));
+    const pos = cells[0]; // LHFA shows position in first col
+
+    const rec = { pos, team: "", points: "" };
+    cols.forEach((k, i) => {
+      if (!k) return;
+      const v = cells[i] ?? "";
+      if (k === "team")      rec.team   = v;
+      else if (k === "points") rec.points = v;
+      else rec[k] = v; // p,w,d,l,f,a,gd
+    });
+
+    // Fallbacks if headers aren’t detected
+    if (!rec.team && cells[1])     rec.team   = cells[1];
+    if (!rec.points && cells.at(-1)) rec.points = cells.at(-1);
+
+    if (rec.team) out.standings.push(rec);
+  }
+}
 
         // Map header tokens to our fields
         const mapHeader = (h) => {
