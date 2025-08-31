@@ -20,6 +20,19 @@
     .loss-row { background-color: #fdecea !important; } /* light red */
     .draw-row { background-color: #f3f4f6 !important; } /* neutral grey */
 
+    /* W/L/D circle */
+    .symbol {
+      display: inline-block;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      line-height: 24px; text-align: center;
+      font-weight: bold; color: #fff;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    .symbol.win  { background: #2e7d32; } /* green */
+    .symbol.loss { background: #c62828; } /* red */
+    .symbol.draw { background: #f9a825; } /* amber */
+
     .card { text-align:center; margin-top:30px; }
     .card img, .card object { max-width: 90%; border: 2px solid var(--green); }
     .grid { display:grid; gap:20px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
@@ -171,7 +184,7 @@
     <section>
       <h2>Upcoming Ness Fixtures (3)</h2>
       <table>
-        <tr><th>Date</th><th>Weekday</th><th>Time</th><th>Opponent</th><th>Location</th><th>Result</th></tr>
+        <tr><th>Date</th><th>Weekday</th><th>W/L/D</th><th>Opponent</th><th>Location</th><th>Result</th></tr>
         
     <tr class="">
       <td>2025-09-01</td>
@@ -201,12 +214,12 @@
 
       <h2>Past Ness Results (13)</h2>
       <table>
-        <tr><th>Date</th><th>Weekday</th><th>Time</th><th>Opponent</th><th>Location</th><th>Result</th></tr>
+        <tr><th>Date</th><th>Weekday</th><th>Result</th><th>Opponent</th><th>Location</th><th>Result</th></tr>
         
     <tr class="win-row">
       <td>2025-04-11</td>
       <td>Friday</td>
-      <td>-</td>
+      <td><span class="symbol win">W</span></td>
       <td>Athletic</td>
       <td class="">Goathill Park, Stornoway</td>
       <td>0 - 1</td>
@@ -214,7 +227,7 @@
     <tr class="loss-row">
       <td>2025-04-14</td>
       <td>Monday</td>
-      <td>-</td>
+      <td><span class="symbol loss">L</span></td>
       <td>Carloway</td>
       <td class="home">HOME (Fivepenny)</td>
       <td>1 - 2</td>
@@ -222,7 +235,7 @@
     <tr class="loss-row">
       <td>2025-05-07</td>
       <td>Wednesday</td>
-      <td>-</td>
+      <td><span class="symbol loss">L</span></td>
       <td>Back</td>
       <td class="">Col Uarach, Back</td>
       <td>4 - 1</td>
@@ -230,7 +243,7 @@
     <tr class="win-row">
       <td>2025-05-14</td>
       <td>Wednesday</td>
-      <td>-</td>
+      <td><span class="symbol win">W</span></td>
       <td>Lochs</td>
       <td class="home">HOME (Fivepenny)</td>
       <td>4 - 2</td>
@@ -238,7 +251,7 @@
     <tr class="win-row">
       <td>2025-05-19</td>
       <td>Monday</td>
-      <td>-</td>
+      <td><span class="symbol win">W</span></td>
       <td>United</td>
       <td class="">Goathill Park, Stornoway</td>
       <td>2 - 4</td>
@@ -246,7 +259,7 @@
     <tr class="loss-row">
       <td>2025-05-23</td>
       <td>Friday</td>
-      <td>-</td>
+      <td><span class="symbol loss">L</span></td>
       <td>Point</td>
       <td class="home">HOME (Fivepenny)</td>
       <td>1 - 3</td>
@@ -254,7 +267,7 @@
     <tr class="loss-row">
       <td>2025-06-13</td>
       <td>Friday</td>
-      <td>-</td>
+      <td><span class="symbol loss">L</span></td>
       <td>Westside</td>
       <td class="home">HOME (Fivepenny)</td>
       <td>2 - 3</td>
@@ -262,7 +275,7 @@
     <tr class="loss-row">
       <td>2025-06-16</td>
       <td>Monday</td>
-      <td>-</td>
+      <td><span class="symbol loss">L</span></td>
       <td>Athletic</td>
       <td class="home">HOME (Fivepenny)</td>
       <td>1 - 2</td>
@@ -270,7 +283,7 @@
     <tr class="loss-row">
       <td>2025-06-23</td>
       <td>Monday</td>
-      <td>-</td>
+      <td><span class="symbol loss">L</span></td>
       <td>Carloway</td>
       <td class="">Cnoc a’ Choilich, Carloway</td>
       <td>2 - 0</td>
@@ -278,7 +291,7 @@
     <tr class="loss-row">
       <td>2025-07-04</td>
       <td>Friday</td>
-      <td>-</td>
+      <td><span class="symbol loss">L</span></td>
       <td>Harris</td>
       <td class="">Rally Park, Tarbert</td>
       <td>3 - 1</td>
@@ -286,7 +299,7 @@
     <tr class="win-row">
       <td>2025-07-25</td>
       <td>Friday</td>
-      <td>-</td>
+      <td><span class="symbol win">W</span></td>
       <td>Back</td>
       <td class="home">HOME (Fivepenny)</td>
       <td>4 - 3</td>
@@ -294,7 +307,7 @@
     <tr class="win-row">
       <td>2025-08-22</td>
       <td>Friday</td>
-      <td>-</td>
+      <td><span class="symbol win">W</span></td>
       <td>United</td>
       <td class="home">HOME (Fivepenny)</td>
       <td>5 - 0</td>
@@ -302,7 +315,7 @@
     <tr class="loss-row">
       <td>2025-08-29</td>
       <td>Friday</td>
-      <td>-</td>
+      <td><span class="symbol loss">L</span></td>
       <td>Point</td>
       <td class="">Garrabost, Point</td>
       <td>3 - 0</td>
@@ -312,7 +325,7 @@
   </div>
 
   <p style="margin-top:40px; font-size:12px; text-align:center;">
-    Data source: LHFA • Last built: 31/08/2025, 12:06:23
+    Data source: LHFA • Last built: 31/08/2025, 12:28:39
   </p>
 </body>
 </html>
