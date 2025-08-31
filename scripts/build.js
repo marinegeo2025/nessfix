@@ -81,7 +81,7 @@ function htmlPage({ standings, fixtures }) {
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>NessFix – Ness FC Fixtures</title>
+  <title>Ness FC – League Table and Fixtures</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root { --green:#008000; }
@@ -100,11 +100,12 @@ function htmlPage({ standings, fixtures }) {
   </style>
 </head>
 <body>
-  <h1>NessFix – League Table & Fixtures</h1>
-
+  import { SITE_TITLE, CARD_LABEL } from "../lib/branding.js";
+  <h1>${SITE_TITLE}</h1>
+  
   <div class="card">
-    <h2>Fixture Card (SVG)</h2>
-    <p><a href="/api/card.png" download="nessfix-card.png">📥 Download Fixture Card (PNG)</a></p>
+    <h2>${CARD_LABEL}</h2>
+    <p><a href="/api/card.png" download="nessfix-card.png">📥 Download ${CARD_LABEL}</a></p>
     <img src="/api/card.png" alt="NessFix Card" style="max-width:90%; border:2px solid var(--green);" />
   </div>
 
