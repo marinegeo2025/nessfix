@@ -1,4 +1,6 @@
 // api/_card-template.js
+import { CARD_TITLE } from "../lib/branding.js";
+
 const isNess = (s) => /^(?:ness)$/i.test((s || "").trim());
 const esc = (s) =>
   String(s ?? "")
@@ -87,7 +89,7 @@ export function buildSVG({ standings, fixtures, updatedAt }) {
   <!-- Header -->
   <rect x="0" y="0" width="${W}" height="${headerH}" fill="${COLORS.header}"/>
   <text x="${W/2}" y="${headerH/2 + 10}" font-size="28" font-weight="800" fill="#fff" text-anchor="middle">
-    ${esc("NESS FC FIXTURES & LEAGUE TABLE")}
+    ${esc(CARD_TITLE)}
   </text>
 
   <!-- League Standings -->
