@@ -71,6 +71,21 @@ function resultRowClassFor(f) {
   return "draw-row";
 }
 
+/** Decide W/L/D symbol for a result */
+function resultSymbol(f) {
+  const res = String(f.result || "").replace(/[–—]/g, "-");
+  const m = res.match(/(\d+)\s*-\s*(\d+)/);
+  if (!m) return ""; // no result yet
+  const h = parseInt(m[1], 10);
+  const a = parseInt(m[2], 10);
+  const nessHome = /ness/i.test(f.home || "");
+  const nessScore = nessHome ? h : a;
+  const oppScore  = nessHome ? a : h;
+  if (nessScore > oppScore) return "W";
+  if (nessScore < oppScore) return "L";
+  return "D";
+}
+
 /** Build a single table row for HTML output */
 const row = (f, showResult) => {
   const home = f.home || "";
@@ -82,11 +97,21 @@ const row = (f, showResult) => {
   const resultText  = showResult ? (f.result || "-") : "-";
   const trClass     = showResult ? resultRowClassFor(f) : ""; // shade entire row only for past results
 
+  // Time column: show W/L/D circle for past results, time for upcoming
+  let symbolCell = "-";
+  if (showResult && f.result) {
+    const sym = resultSymbol(f);
+    const cls = sym === "W" ? "win" : sym === "L" ? "loss" : "draw";
+    symbolCell = `<span class="symbol ${cls}">${sym}</span>`;
+  } else if (!showResult) {
+    symbolCell = f.time || "-";
+  }
+
   return `
     <tr class="${trClass}">
       <td>${f.date || "-"}</td>
       <td>${weekday(f.date)}</td>
-      <td>${f.time || "-"}</td>
+      <td>${symbolCell}</td>
       <td>${opponent || "-"}</td>
       <td class="${nessHome ? "home" : ""}">${location}</td>
       <td>${resultText}</td>
@@ -118,6 +143,19 @@ function htmlPage({ standings, fixtures }) {
     .win-row  { background-color: #e8f5e9 !important; } /* light green */
     .loss-row { background-color: #fdecea !important; } /* light red */
     .draw-row { background-color: #f3f4f6 !important; } /* neutral grey */
+
+    /* W/L/D circle */
+    .symbol {
+      display: inline-block;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      line-height: 24px; text-align: center;
+      font-weight: bold; color: #fff;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    .symbol.win  { background: #2e7d32; } /* green */
+    .symbol.loss { background: #c62828; } /* red */
+    .symbol.draw { background: #f9a825; } /* amber */
 
     .card { text-align:center; margin-top:30px; }
     .card img, .card object { max-width: 90%; border: 2px solid var(--green); }
