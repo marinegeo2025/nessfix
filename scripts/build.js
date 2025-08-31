@@ -56,27 +56,46 @@ function weekday(iso) {
   return new Date(y, m - 1, d).toLocaleDateString("en-GB", { weekday: "long" });
 }
 
+/** Decide CSS class for a result (win/loss/draw) */
+function resultClassFor(f) {
+  const res = String(f.result || "").replace(/[–—]/g, "-"); // normalize dashes
+  const m = res.match(/(\d+)\s*-\s*(\d+)/);
+  if (!m) return res ? "draw" : "";
+  const h = parseInt(m[1], 10);
+  const a = parseInt(m[2], 10);
+  const nessHome = /ness/i.test(f.home || "");
+  const nessScore = nessHome ? h : a;
+  const oppScore  = nessHome ? a : h;
+  if (nessScore > oppScore) return "win";
+  if (nessScore < oppScore) return "loss";
+  return "draw";
+}
+
+/** Build a single table row for HTML output */
+const row = (f, showResult) => {
+  const home = f.home || "";
+  const away = f.away || "";
+  const nessHome = isNess(home);
+  const opponent = nessHome ? away : home;
+  const location = nessHome ? "HOME (Fivepenny)" : (f.ground || `AWAY at ${home}`);
+
+  const resultText  = showResult ? (f.result || "-") : "-";
+  const resultClass = showResult ? resultClassFor(f) : "";
+
+  return `
+    <tr>
+      <td>${f.date || "-"}</td>
+      <td>${weekday(f.date)}</td>
+      <td>${f.time || "-"}</td>
+      <td>${opponent || "-"}</td>
+      <td class="${nessHome ? "home" : ""}">${location}</td>
+      <td class="${resultClass}">${resultText}</td>
+    </tr>`;
+};
+
 function htmlPage({ standings, fixtures }) {
   const up = fixtures.filter((f) => !f.result);
   const past = fixtures.filter((f) => !!f.result);
-
-  const row = (f, showResult) => {
-    const home = f.home || "";
-    const away = f.away || "";
-    const nessHome = isNess(home);
-    const opponent = nessHome ? away : home;
-    const location = nessHome ? "HOME (Fivepenny)" : (f.ground || `AWAY at ${home}`);
-
-    return `
-      <tr>
-        <td>${f.date || "-"}</td>
-        <td>${weekday(f.date)}</td>
-        <td>${f.time || "-"}</td>
-        <td>${opponent || "-"}</td>
-        <td class="${nessHome ? "home" : ""}">${location}</td>
-        <td>${showResult ? (f.result || "-") : "-"}</td>
-      </tr>`;
-  };
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -94,6 +113,9 @@ function htmlPage({ standings, fixtures }) {
     tr:nth-child(even) { background: #f2f2f2; }
     .ness { background: #c6f6c6; font-weight: bold; }
     .home { color: var(--green); font-weight: bold; }
+    .win  { color: #0a7a0a; font-weight: 700; }
+    .loss { color: #b00020; font-weight: 700; }
+    .draw { color: #6b7280; font-weight: 700; }
     .card { text-align:center; margin-top:30px; }
     .card img, .card object { max-width: 90%; border: 2px solid var(--green); }
     .grid { display:grid; gap:20px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
@@ -167,8 +189,8 @@ function svgCard({ standings, fixtures }) {
 
   const headerH = 80;
   const rowH = 28;
-  const sectionGap = 30;      // gap between sections
-  const titleGap = 50;        // gap between a section title and its list
+  const sectionGap = 30;
+  const titleGap = 50;
 
   const up = (fixtures || []).filter(f => !f.result).slice(0, 3);
 
@@ -187,13 +209,12 @@ function svgCard({ standings, fixtures }) {
     `;
   }).join("");
 
-  // compute where the next section should start (just below the last standings row)
   const standingsHeight = (standings?.length || 0) * rowH;
   const upcomingTitleY  = standingsListY + standingsHeight + sectionGap;
   const fixturesListY   = upcomingTitleY + titleGap;
 
   const fxRows = up.map((f, i) => {
-    const y = fixturesListY + i * 80; // keep big spacing for fixtures
+    const y = fixturesListY + i * 80;
     const homeIsNess = /^(?:ness)$/i.test((f.home || "").trim());
     const wd = (d => {
       const [Y,M,D] = (d||"").split("-").map(Number);
@@ -251,17 +272,14 @@ function svgCard({ standings, fixtures }) {
   const standings = Array.isArray(data.standings) ? data.standings : [];
   let fixtures = Array.isArray(data.fixtures) ? data.fixtures : [];
 
-  // Normalise then sort by date+time
   fixtures = normaliseFixtures(fixtures);
   fixtures.sort((a, b) => (a.date + (a.time || "")).localeCompare(b.date + (b.time || "")));
 
   fs.mkdirSync("./public", { recursive: true });
 
-  // HTML
   const html = htmlPage({ standings, fixtures });
   fs.writeFileSync("./public/index.html", html);
 
-  // SVG card
   const svg = svgCard({ standings, fixtures });
   fs.writeFileSync("./public/nessfix.svg", svg);
 
