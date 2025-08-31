@@ -82,18 +82,45 @@ await page.waitForFunction(() => {
 
       // League table assumed first table (as per LHFA today)
       if (tables[0]) {
-        const t = tables[0];
-        const rows = Array.from(t.querySelectorAll("tbody tr, tr"));
-        for (const tr of rows) {
-          const tds = tr.querySelectorAll("td");
-          if (tds.length >= 3) {
-            const pos = norm(tds[0]?.textContent);
-            const team = norm(tds[1]?.textContent);
-            const points = norm(tds[tds.length - 1]?.textContent);
-            if (team) out.standings.push({ pos, team, points });
-          }
-        }
-      }
+  const t = tables[0];
+
+  const headKeys = Array.from(
+    t.querySelectorAll("thead th, tr:first-child th, tr:first-child td")
+  ).map(el => key(el.textContent));
+
+  const mapHeader = (h) => {
+    if (!h) return "";
+    if (h === "club" || h === "team") return "team";
+    if (h === "pts"  || h === "points") return "points";
+    if (["p","w","d","l","f","a","gd"].includes(h)) return h;
+    return "";
+  };
+  const cols = headKeys.map(mapHeader);
+
+  const rows = Array.from(t.querySelectorAll("tbody tr, tr"));
+  for (const tr of rows) {
+    const tds = Array.from(tr.querySelectorAll("td"));
+    if (tds.length < 3) continue;
+
+    const cells = tds.map(td => norm(td.textContent));
+    const pos = cells[0]; // LHFA shows position in first col
+
+    const rec = { pos, team: "", points: "" };
+    cols.forEach((k, i) => {
+      if (!k) return;
+      const v = cells[i] ?? "";
+      if (k === "team")        rec.team   = v;
+      else if (k === "points") rec.points = v;
+      else rec[k] = v; // p,w,d,l,f,a,gd
+    });
+
+    // Fallbacks if headers weren’t detected
+    if (!rec.team && cells[1])      rec.team   = cells[1];
+    if (!rec.points && cells.at(-1)) rec.points = cells.at(-1);
+
+    if (rec.team) out.standings.push(rec);
+  }
+}
 
       // Find fixtures table: must include date+home+away and (score OR time) in headers
       const fixturesTable = tables.find((t) => {
