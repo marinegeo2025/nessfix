@@ -218,7 +218,7 @@ function svgCard({ standings, fixtures }) {
   <!-- Header bar -->
   <rect x="0" y="0" width="${W}" height="${headerH}" fill="${COLORS.header}"/>
   <text x="${W/2}" y="${headerH/2 + 10}" font-size="28" font-weight="800" fill="#fff" text-anchor="middle">
-    NESS FC FIXTURES &amp; LEAGUE TABLE
+    ${esc(CARD_TITLE)}
   </text>
 
   <!-- Standings -->
