@@ -5,7 +5,7 @@
   <!-- Header bar -->
   <rect x="0" y="0" width="800" height="80" fill="#2f7d2f"/>
   <text x="400" y="50" font-size="28" font-weight="800" fill="#fff" text-anchor="middle">
-    NESS FC FIXTURES &amp; LEAGUE TABLE
+    Ness FC League Table and Fixtures
   </text>
 
   <!-- Standings -->
