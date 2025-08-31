@@ -225,7 +225,7 @@ function htmlPage({ standings, fixtures }) {
     <section>
       <h2>Upcoming Ness Fixtures (${up.length})</h2>
       <table>
-        <tr><th>Date</th><th>Weekday</th><th>Time</th><th>Opponent</th><th>Location</th><th>Result</th></tr>
+        <tr><th>Date</th><th>Weekday</th><th>W/L/D</th><th>Opponent</th><th>Location</th><th>Result</th></tr>
         ${
           up.length
             ? up.map((f) => row(f, false)).join("")
@@ -235,7 +235,7 @@ function htmlPage({ standings, fixtures }) {
 
       <h2>Past Ness Results (${past.length})</h2>
       <table>
-        <tr><th>Date</th><th>Weekday</th><th>Time</th><th>Opponent</th><th>Location</th><th>Result</th></tr>
+        <tr><th>Date</th><th>Weekday</th><th>Result</th><th>Opponent</th><th>Location</th><th>Result</th></tr>
         ${
           past.length
             ? past.map((f) => row(f, true)).join("")
