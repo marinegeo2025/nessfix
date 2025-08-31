@@ -123,6 +123,8 @@ function htmlPage({ standings, fixtures }) {
     .card img, .card object { max-width: 90%; border: 2px solid var(--green); }
     .grid { display:grid; gap:20px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
     .standings { overflow:auto; }
+    .standings table { font-size: 14px; }
+    .standings th, .standings td { padding: 6px; }
   </style>
 </head>
 <body>
