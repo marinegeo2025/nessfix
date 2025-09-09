@@ -21,7 +21,7 @@
       <text x="280" y="208" font-size="20" font-weight="400"
             fill="#222222">2. Back</text>
       <text x="520" y="208" font-size="20" text-anchor="end"
-            fill="#222222">30 pts</text>
+            fill="#222222">33 pts</text>
     
       <text x="280" y="236" font-size="20" font-weight="400"
             fill="#222222">3. Point</text>
@@ -38,20 +38,20 @@
       <text x="520" y="292" font-size="20" text-anchor="end"
             fill="#222222">21 pts</text>
     
-      <text x="280" y="320" font-size="20" font-weight="700"
-            fill="#2f7d2f">6. Ness</text>
+      <text x="280" y="320" font-size="20" font-weight="400"
+            fill="#222222">6. Harris</text>
       <text x="520" y="320" font-size="20" text-anchor="end"
+            fill="#222222">18 pts</text>
+    
+      <text x="280" y="348" font-size="20" font-weight="700"
+            fill="#2f7d2f">7. Ness</text>
+      <text x="520" y="348" font-size="20" text-anchor="end"
             fill="#2f7d2f">16 pts</text>
     
-      <text x="280" y="348" font-size="20" font-weight="400"
-            fill="#222222">7. Lochs</text>
-      <text x="520" y="348" font-size="20" text-anchor="end"
-            fill="#222222">16 pts</text>
-    
       <text x="280" y="376" font-size="20" font-weight="400"
-            fill="#222222">8. Harris</text>
+            fill="#222222">8. Lochs</text>
       <text x="520" y="376" font-size="20" text-anchor="end"
-            fill="#222222">15 pts</text>
+            fill="#222222">16 pts</text>
     
       <text x="280" y="404" font-size="20" font-weight="400"
             fill="#222222">9. United</text>
@@ -65,19 +65,13 @@
   </text>
   
       <text x="400" y="512" font-size="22" text-anchor="middle"
-            font-weight="700"
-            fill="#2f7d2f">
-        Monday 2025-09-08 18:30 – Ness vs Harris
-      </text>
-    
-      <text x="400" y="592" font-size="22" text-anchor="middle"
             font-weight="500"
             fill="#222222">
-        Saturday 2025-09-13 18:30 – Westside vs Ness
+        Saturday 2025-09-13 17:00 – Westside vs Ness
       </text>
     
 
   <!-- Footer -->
   <rect x="0" y="960" width="800" height="40" fill="#000000"/>
-  <text x="400" y="985" font-size="16" fill="#ffffff" text-anchor="middle">Updated 08 Sept 2025</text>
+  <text x="400" y="985" font-size="16" fill="#ffffff" text-anchor="middle">Updated 09 Sept 2025</text>
 </svg>
