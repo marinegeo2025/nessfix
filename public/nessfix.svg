@@ -14,14 +14,14 @@
   </text>
   
       <text x="280" y="180" font-size="20" font-weight="400"
-            fill="#222222">1. Westside</text>
+            fill="#222222">1. Back</text>
       <text x="520" y="180" font-size="20" text-anchor="end"
-            fill="#222222">35 pts</text>
+            fill="#222222">36 pts</text>
     
       <text x="280" y="208" font-size="20" font-weight="400"
-            fill="#222222">2. Back</text>
+            fill="#222222">2. Westside</text>
       <text x="520" y="208" font-size="20" text-anchor="end"
-            fill="#222222">33 pts</text>
+            fill="#222222">35 pts</text>
     
       <text x="280" y="236" font-size="20" font-weight="400"
             fill="#222222">3. Point</text>
@@ -73,5 +73,5 @@
 
   <!-- Footer -->
   <rect x="0" y="960" width="800" height="40" fill="#000000"/>
-  <text x="400" y="985" font-size="16" fill="#ffffff" text-anchor="middle">Updated 10 Sept 2025</text>
+  <text x="400" y="985" font-size="16" fill="#ffffff" text-anchor="middle">Updated 11 Sept 2025</text>
 </svg>
