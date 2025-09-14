@@ -16,27 +16,27 @@
       <text x="280" y="180" font-size="20" font-weight="400"
             fill="#222222">1. Back</text>
       <text x="520" y="180" font-size="20" text-anchor="end"
-            fill="#222222">36 pts</text>
+            fill="#222222">39 pts</text>
     
       <text x="280" y="208" font-size="20" font-weight="400"
             fill="#222222">2. Westside</text>
       <text x="520" y="208" font-size="20" text-anchor="end"
-            fill="#222222">35 pts</text>
+            fill="#222222">38 pts</text>
     
       <text x="280" y="236" font-size="20" font-weight="400"
             fill="#222222">3. Point</text>
       <text x="520" y="236" font-size="20" text-anchor="end"
-            fill="#222222">29 pts</text>
+            fill="#222222">32 pts</text>
     
       <text x="280" y="264" font-size="20" font-weight="400"
-            fill="#222222">4. Carloway</text>
+            fill="#222222">4. Athletic</text>
       <text x="520" y="264" font-size="20" text-anchor="end"
-            fill="#222222">23 pts</text>
+            fill="#222222">24 pts</text>
     
       <text x="280" y="292" font-size="20" font-weight="400"
-            fill="#222222">5. Athletic</text>
+            fill="#222222">5. Carloway</text>
       <text x="520" y="292" font-size="20" text-anchor="end"
-            fill="#222222">21 pts</text>
+            fill="#222222">23 pts</text>
     
       <text x="280" y="320" font-size="20" font-weight="400"
             fill="#222222">6. Harris</text>
@@ -64,14 +64,8 @@
     Upcoming Fixtures
   </text>
   
-      <text x="400" y="512" font-size="22" text-anchor="middle"
-            font-weight="500"
-            fill="#222222">
-        Saturday 2025-09-13 17:00 – Westside vs Ness
-      </text>
-    
 
   <!-- Footer -->
   <rect x="0" y="960" width="800" height="40" fill="#000000"/>
-  <text x="400" y="985" font-size="16" fill="#ffffff" text-anchor="middle">Updated 13 Sept 2025</text>
+  <text x="400" y="985" font-size="16" fill="#ffffff" text-anchor="middle">Updated 14 Sept 2025</text>
 </svg>
